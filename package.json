@@ -5,6 +5,7 @@
   "homepage": "https://github.com/balena-io-modules/balena-pricing#readme",
   "main": "dist",
   "types": "dist/index.d.ts",
+  "private": false,
   "keywords": [
     "balena",
     "pricing"
