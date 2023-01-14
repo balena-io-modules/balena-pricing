@@ -1,4 +1,16 @@
 - commits:
+    - subject: Set private to false in package.json
+      hash: 414022e64d646e993d40b09cec2521062b8cee66
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 0.0.4
+  title: ""
+  date: 2023-01-14T08:59:24.264Z
+- commits:
     - subject: Update tsconfig
       hash: 3e258d717d403917a06a1c290bcf6daee455da53
       body: ""
