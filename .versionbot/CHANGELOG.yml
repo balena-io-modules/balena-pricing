@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update tsconfig
+      hash: 3e258d717d403917a06a1c290bcf6daee455da53
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 0.0.3
+  title: ""
+  date: 2023-01-14T08:36:12.233Z
+- commits:
     - subject: Update configs/license/readme
       hash: 037f23ac42ed36140293e0497546ea7115501fa5
       body: ""
