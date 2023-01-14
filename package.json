@@ -1,6 +1,6 @@
 {
   "name": "@balena/balena-pricing",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Balena pricing/savings calculators",
   "homepage": "https://github.com/balena-io-modules/balena-pricing#readme",
   "main": "dist",
@@ -56,5 +56,8 @@
     "recursive": true,
     "require": "ts-node/register/transpile-only",
     "_": "test/*.spec.ts"
+  },
+  "versionist": {
+    "publishedAt": "2023-01-14T07:35:08.701Z"
   }
 }

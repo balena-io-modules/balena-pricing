@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update configs/license/readme
+      hash: 037f23ac42ed36140293e0497546ea7115501fa5
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 0.0.2
+  title: ""
+  date: 2023-01-14T07:35:08.637Z
+- commits:
     - subject: Update typescript and ts-node
       hash: 960d4ca62d4e45b91a3e1fa66d6afbbeeb1ed7ab
       body: >
