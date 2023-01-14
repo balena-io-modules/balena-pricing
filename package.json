@@ -1,54 +1,60 @@
 {
-  "name": "balena-typescript-skeleton",
-  "version": "2.2.0",
-  "description": "Skeleton template for a balena TypeScript project",
-  "homepage": "https://github.com/balena-io/balena-typescript-skeleton#readme",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "name": "@balena/balena-pricing",
+  "version": "1.0.0",
+  "description": "Balena pricing/savings calculators",
+  "homepage": "https://github.com/balena-io-modules/balena-pricing#readme",
+  "main": "dist",
+  "types": "dist/index.d.ts",
   "keywords": [
     "balena",
-    "typescript"
+    "pricing"
   ],
-  "author": "",
-  "license": "Apache-2.0",
+  "files": [
+    "dist/"
+  ],
+  "license": "AGPL-3.0",
+  "engines": {
+    "node": "^18.12.0",
+    "npm": "8.19.2"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/balena-io/balena-typescript-skeleton.git"
+    "url": "git+https://github.com/balena-io-modules/balena-pricing.git"
   },
   "bugs": {
-    "url": "https://github.com/balena-io/balena-typescript-skeleton/issues"
+    "url": "https://github.com/balena-io-modules/balena-pricing/issues"
   },
-  "files": [
-    "build/"
-  ],
   "scripts": {
-    "clean": "rimraf build",
-    "build": "npm run clean && tsc",
-    "lint": "balena-lint --typescript lib tests",
-    "lint-fix": "balena-lint --typescript --fix lib tests",
-    "test:node": "mocha -r ts-node/register --reporter spec tests/**/*.spec.ts",
-    "test:browser": "karma start",
-    "test": "npm run build && npm run lint && npm run test:node && npm run test:browser",
-    "test:fast": "npm run build && npm run test:node",
-    "prepack": "npm run build"
+    "lint": "balena-lint --typescript src test",
+    "lint-fix": "balena-lint --typescript --fix src test",
+    "pretest": "npm run prepare",
+    "test": "mocha",
+    "posttest": "npm run lint",
+    "prepare": "node -e \"try { require('husky').install() } catch (e) {if (e.code !== 'MODULE_NOT_FOUND') throw e}\" && tsc",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc --project ./tsconfig.build.json"
   },
   "devDependencies": {
-    "@balena/lint": "^5.4.2",
-    "@types/chai": "^4.2.18",
-    "@types/chai-as-promised": "^7.1.4",
-    "@types/mocha": "^8.2.2",
-    "balena-config-karma": "^3.0.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
-    "husky": "^4.2.5",
-    "karma": "^6.3.2",
+    "@balena/lint": "^6.2.1",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "husky": "^8.0.3",
     "lint-staged": "^11.0.0",
     "mocha": "^8.4.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.0.4",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.4"
   },
-  "versionist": {
-    "publishedAt": "2022-07-20T21:31:17.871Z"
+  "lint-staged": {
+    "*.ts": [
+      "balena-lint --fix"
+    ]
+  },
+  "mocha": {
+    "reporter": "spec",
+    "recursive": true,
+    "require": "ts-node/register/transpile-only",
+    "_": "test/*.spec.ts"
   }
 }
