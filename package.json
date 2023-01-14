@@ -60,5 +60,8 @@
   },
   "versionist": {
     "publishedAt": "2023-01-15T02:22:30.316Z"
+  },
+  "dependencies": {
+    "typed-error": "^3.2.1"
   }
 }
