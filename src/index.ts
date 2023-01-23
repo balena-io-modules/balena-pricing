@@ -107,7 +107,7 @@ export class CreditPricing {
 	 * @returns total price of credits for purchase
 	 *
 	 * @example
-	 * const price = getCreditTotalPrice('device:microservices', 0, 25000, 0.1);
+	 * const price = getCreditTotalPrice('device:microservices', 0, 25000);
 	 */
 	public getCreditTotalPrice(
 		featureSlug: string,
@@ -154,7 +154,7 @@ export class CreditPricing {
 	 * @returns total savings of credits for purchase
 	 *
 	 * @example
-	 * const savings = getTotalSavings('device:microservices', 0, 25000, 0.1);
+	 * const savings = getTotalSavings('device:microservices', 0, 25000, 100);
 	 */
 	public getTotalSavings(
 		featureSlug: string,
