@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 0.1.1 - 2023-01-23
+
+* Fix typos in JS docs for `getCreditTotalPrice` and `getTotalSavings` [myarmolinsky]
+
 ## 0.1.0 - 2023-01-17
 
 * Add cost/savings calculators [Josh Bowling]

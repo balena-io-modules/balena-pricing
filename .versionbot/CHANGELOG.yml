@@ -1,4 +1,16 @@
 - commits:
+    - subject: Fix typos in JS docs for `getCreditTotalPrice` and `getTotalSavings`
+      hash: f67f938a69dbbb128fcc34b4cdf226d4823bd557
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: myarmolinsky
+      nested: []
+  version: 0.1.1
+  title: ""
+  date: 2023-01-23T15:14:06.193Z
+- commits:
     - subject: Add cost/savings calculators
       hash: 55fa8a2b87cef65598e2c45d583dd0b5156cafe6
       body: ""
