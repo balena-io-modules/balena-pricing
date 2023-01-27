@@ -1,4 +1,40 @@
 - commits:
+    - subject: Fix test
+      hash: 55427b78a9077c74143d8649697a8288f9bb38ef
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+    - subject: Error when non-integer values are provided
+      hash: 65e1791cf72e04bb6879c54e363bad2808be2e10
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+      nested: []
+    - subject: Change the error messages to be user facing friendly
+      hash: 6eb49fddf8c4291b9fa4c43a5c7b9f05baaf5dfd
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+      nested: []
+    - subject: Require purchase amount to be a positive number
+      hash: 8e4e3f868d82332959d7e8d04868e0a540df7e8c
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+      nested: []
+  version: 0.1.3
+  title: ""
+  date: 2023-01-27T11:52:07.915Z
+- commits:
     - subject: Add a limit to keep the getCreditTotalPrice monotonically increasing
       hash: 33d9af3508cf30039ff95c28b4a414cc0386cb8c
       body: ""

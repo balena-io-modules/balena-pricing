@@ -4,6 +4,13 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 0.1.3 - 2023-01-27
+
+* Fix test [Josh Bowling]
+* Error when non-integer values are provided [Thodoris Greasidis]
+* Change the error messages to be user facing friendly [Thodoris Greasidis]
+* Require purchase amount to be a positive number [Thodoris Greasidis]
+
 ## 0.1.2 - 2023-01-27
 
 * Add a limit to keep the getCreditTotalPrice monotonically increasing [Thodoris Greasidis]
