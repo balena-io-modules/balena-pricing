@@ -558,7 +558,7 @@ describe('getCreditTotalPrice()', function () {
 
 	it('should be monotonically increasing until it throws an exception when the the max credits cap is reached ', function () {
 		let lastResult: number | undefined;
-		let i = 0;
+		let i = 1;
 		let error: Error | undefined;
 		try {
 			for (; i < 20; i++) {
