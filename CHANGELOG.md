@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 0.1.2 - 2023-01-27
+
+* Add a limit to keep the getCreditTotalPrice monotonically increasing [Thodoris Greasidis]
+
 ## 0.1.1 - 2023-01-23
 
 * Fix typos in JS docs for `getCreditTotalPrice` and `getTotalSavings` [myarmolinsky]

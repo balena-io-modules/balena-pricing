@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add a limit to keep the getCreditTotalPrice monotonically increasing
+      hash: 33d9af3508cf30039ff95c28b4a414cc0386cb8c
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+      nested: []
+  version: 0.1.2
+  title: ""
+  date: 2023-01-27T09:25:05.246Z
+- commits:
     - subject: Fix typos in JS docs for `getCreditTotalPrice` and `getTotalSavings`
       hash: f67f938a69dbbb128fcc34b4cdf226d4823bd557
       body: ""
