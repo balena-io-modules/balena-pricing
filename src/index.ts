@@ -71,8 +71,8 @@ export class CreditPricing {
 		if (availableCredits < 0) {
 			throw new InvalidParametersError('Available credits must be >= 0');
 		}
-		if (creditsToPurchase < 0) {
-			throw new InvalidParametersError('Credit purchase amount must be >= 0');
+		if (creditsToPurchase <= 0) {
+			throw new InvalidParametersError('Credit purchase amount must be > 0');
 		}
 
 		const pricing = getFeaturePricing(this.credits, featureSlug);
