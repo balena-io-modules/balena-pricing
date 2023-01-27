@@ -90,13 +90,19 @@ export class CreditPricing {
 			);
 		}
 
-		return Math.round(
+		const result = Math.round(
 			pricing.discountThresholdPriceCents *
 				Math.pow(
 					1 - pricing.discountRate,
 					Math.log10(total / pricing.discountThreshold),
 				),
 		);
+		if (result <= 0) {
+			throw new InvalidParametersError(
+				'The provided quantity surpasses the maximum supported amount of credits',
+			);
+		}
+		return result;
 	}
 
 	/**

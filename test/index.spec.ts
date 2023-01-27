@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { CreditPricing, CREDITS } from '../src';
+import { CreditPricing, CREDITS, InvalidParametersError } from '../src';
 
 const dynamicPriceCents = 150;
 const FEATURE_SLUG = 'foo:bar';
@@ -536,6 +536,36 @@ describe('getCreditTotalPrice()', function () {
 				),
 			).to.equal('$1,210,300.00');
 		});
+	});
+
+	it('should be monotonically increasing until it throws an exception when the the max credits cap is reached ', function () {
+		let lastResult: number | undefined;
+		let i = 0;
+		let error: Error | undefined;
+		try {
+			for (; i < 20; i++) {
+				const creditsToBuy = 10 ** i / 2;
+				const currentCredits = creditsToBuy;
+				const result = pricing.getCreditTotalPrice(
+					FEATURE_SLUG,
+					currentCredits,
+					creditsToBuy,
+				);
+				if (lastResult != null) {
+					expect(result).to.be.greaterThan(lastResult);
+				}
+				lastResult = result;
+			}
+		} catch (err) {
+			error = err;
+		}
+		expect(10 ** i).to.be.greaterThan(1_000_000_000_000); // A trillion
+		expect(error)
+			.to.be.an.instanceof(InvalidParametersError)
+			.that.has.property(
+				'message',
+				'The provided quantity surpasses the maximum supported amount of credits',
+			);
 	});
 });
 
