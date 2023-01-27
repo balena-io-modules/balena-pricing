@@ -44,23 +44,41 @@ describe('getPricing()', function () {
 });
 
 describe('getCreditPrice()', function () {
+	it('should throw on non-integer available credits', function () {
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, NaN, 0);
+		}).to.throw('Available credits must be a whole number');
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 10.5, 0);
+		}).to.throw('Available credits must be a whole number');
+	});
+
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, -1, 0);
-		}).to.throw('Available credits must be >= 0');
+		}).to.throw('Available credits must be greater than or equal to 0');
+	});
+
+	it('should throw on non-integer available credits', function () {
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 0, NaN);
+		}).to.throw('Credit purchase amount must be a whole number');
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 0, 10.5);
+		}).to.throw('Credit purchase amount must be a whole number');
 	});
 
 	it('should throw on negative purchase amount', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, 0, -1);
-		}).to.throw('Credit purchase amount must be >= 0');
+		}).to.throw('Credit purchase amount must be greater than 0');
 	});
 
 	describe('when available credits are 0', function () {
-		it('should return 0 when purchase amount is 0', function () {
-			expect(toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 0))).to.equal(
-				'$0.00',
-			);
+		it('should throw when purchase amount is 0', function () {
+			expect(() =>
+				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 0)),
+			).to.throw('Credit purchase amount must be greater than 0');
 		});
 
 		it('should calculate price of a single credit', function () {
@@ -137,12 +155,12 @@ describe('getCreditPrice()', function () {
 	});
 
 	describe('when available credits are at the aggressive discount threshold', function () {
-		it('should return 0 when purchase amount is 0', function () {
-			expect(
+		it('should throw when purchase amount is 0', function () {
+			expect(() =>
 				toDollar(
 					pricing.getCreditPrice(FEATURE_SLUG, testCredit.discountThreshold, 0),
 				),
-			).to.equal('$0.00');
+			).to.throw('Credit purchase amount must be greater than 0');
 		});
 
 		it('should calculate price of a single credit', function () {
@@ -291,20 +309,20 @@ describe('getCreditTotalPrice()', function () {
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getCreditTotalPrice(FEATURE_SLUG, -1, 0);
-		}).to.throw('Available credits must be >= 0');
+		}).to.throw('Available credits must be greater than or equal to 0');
 	});
 
 	it('should throw on negative purchase amount', function () {
 		expect(() => {
 			pricing.getCreditTotalPrice(FEATURE_SLUG, 0, -1);
-		}).to.throw('Credit purchase amount must be >= 0');
+		}).to.throw('Credit purchase amount must be greater than 0');
 	});
 
 	describe('when available credits are 0', function () {
-		it('should return 0 when credit total is 0', function () {
-			expect(
+		it('should throw when credit total is 0', function () {
+			expect(() =>
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 0)),
-			).to.equal('$0.00');
+			).to.throw('Credit purchase amount must be greater than 0');
 		});
 
 		it('should calculate price of a single credit', function () {
@@ -381,8 +399,8 @@ describe('getCreditTotalPrice()', function () {
 	});
 
 	describe('when available credits are at the aggressive discount threshold', function () {
-		it('should return 0 when purchase amount is 0', function () {
-			expect(
+		it('should throw when purchase amount is 0', function () {
+			expect(() =>
 				toDollar(
 					pricing.getCreditTotalPrice(
 						FEATURE_SLUG,
@@ -390,7 +408,7 @@ describe('getCreditTotalPrice()', function () {
 						0,
 					),
 				),
-			).to.equal('$0.00');
+			).to.throw('Credit purchase amount must be greater than 0');
 		});
 
 		it('should calculate price of a single credit', function () {
@@ -540,7 +558,7 @@ describe('getCreditTotalPrice()', function () {
 
 	it('should be monotonically increasing until it throws an exception when the the max credits cap is reached ', function () {
 		let lastResult: number | undefined;
-		let i = 0;
+		let i = 1;
 		let error: Error | undefined;
 		try {
 			for (; i < 20; i++) {
@@ -573,13 +591,13 @@ describe('getDiscountOverDynamic()', function () {
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getDiscountOverDynamic(FEATURE_SLUG, -1, 0, dynamicPriceCents);
-		}).to.throw('Available credits must be >= 0');
+		}).to.throw('Available credits must be greater than or equal to 0');
 	});
 
 	it('should throw on negative purchase amount', function () {
 		expect(() => {
 			pricing.getDiscountOverDynamic(FEATURE_SLUG, 0, -1, dynamicPriceCents);
-		}).to.throw('Credit purchase amount must be >= 0');
+		}).to.throw('Credit purchase amount must be greater than 0');
 	});
 
 	describe('when available credits are 0', function () {
@@ -855,13 +873,13 @@ describe('getTotalSavings()', function () {
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getTotalSavings(FEATURE_SLUG, -1, 0, dynamicPriceCents);
-		}).to.throw('Available credits must be >= 0');
+		}).to.throw('Available credits must be greater than or equal to 0');
 	});
 
 	it('should throw on negative purchase amount', function () {
 		expect(() => {
 			pricing.getTotalSavings(FEATURE_SLUG, 0, -1, dynamicPriceCents);
-		}).to.throw('Credit purchase amount must be >= 0');
+		}).to.throw('Credit purchase amount must be greater than 0');
 	});
 
 	describe('when available credits are 0', function () {
