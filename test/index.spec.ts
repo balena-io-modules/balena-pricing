@@ -44,10 +44,28 @@ describe('getPricing()', function () {
 });
 
 describe('getCreditPrice()', function () {
+	it('should throw on non-integer available credits', function () {
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, NaN, 0);
+		}).to.throw('Available credits must be a whole number');
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 10.5, 0);
+		}).to.throw('Available credits must be a whole number');
+	});
+
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, -1, 0);
 		}).to.throw('Available credits must be greater than or equal to 0');
+	});
+
+	it('should throw on non-integer available credits', function () {
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 0, NaN);
+		}).to.throw('Credit purchase amount must be a whole number');
+		expect(() => {
+			pricing.getCreditPrice(FEATURE_SLUG, 0, 10.5);
+		}).to.throw('Credit purchase amount must be a whole number');
 	});
 
 	it('should throw on negative purchase amount', function () {

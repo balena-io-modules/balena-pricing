@@ -68,11 +68,25 @@ export class CreditPricing {
 		creditsToPurchase: number,
 	): number {
 		// Assert that credit amounts are valid
+		if (!Number.isInteger(availableCredits)) {
+			throw new InvalidParametersError(
+				'Available credits must be a whole number',
+			);
+		}
+		if (!Number.isInteger(creditsToPurchase)) {
+			throw new InvalidParametersError(
+				'Credit purchase amount must be a whole number',
+			);
+		}
 		if (availableCredits < 0) {
-			throw new InvalidParametersError('Available credits must be greater than or equal to 0');
+			throw new InvalidParametersError(
+				'Available credits must be greater than or equal to 0',
+			);
 		}
 		if (creditsToPurchase <= 0) {
-			throw new InvalidParametersError('Credit purchase amount must be greater than 0');
+			throw new InvalidParametersError(
+				'Credit purchase amount must be greater than 0',
+			);
 		}
 
 		const pricing = getFeaturePricing(this.credits, featureSlug);
