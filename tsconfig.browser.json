@@ -1,0 +1,13 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "es6",
+		"target": "es6",
+		"moduleResolution": "node",
+		"lib": ["dom", "es6"],
+		"outDir": "browser/"
+	},
+	"exclude": [
+		"test/*.spec.ts"
+	]
+}
