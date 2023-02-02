@@ -31,7 +31,7 @@ function toDollar(pennies: number): string {
 	return dollar.format(pennies / 100);
 }
 
-describe('getPricing()', function () {
+describe('Instantiation', function () {
 	it('should use passed in credit pricing', function () {
 		const custom = new CreditPricing(TEST_CREDITS);
 		expect(custom.credits).to.equal(TEST_CREDITS);
@@ -40,6 +40,16 @@ describe('getPricing()', function () {
 	it('should use default credit pricing if custom not specified', function () {
 		const standard = new CreditPricing();
 		expect(standard.credits).to.equal(CREDITS);
+	});
+});
+
+describe('exists()', function () {
+	it('should return true when feature has credit pricing definition', function () {
+		expect(pricing.exists(FEATURE_SLUG)).to.equal(true);
+	});
+
+	it('should return false when feature does not have credit pricing definition', function () {
+		expect(pricing.exists('buz:baz')).to.equal(false);
 	});
 });
 

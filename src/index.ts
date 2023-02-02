@@ -53,6 +53,15 @@ export class CreditPricing {
 	}
 
 	/**
+	 * Checks if a given feature slug has a credit pricing definition.
+	 * @param featureSlug - feature slug to check
+	 * @returns boolean denoting if feature has a credit pricing definition
+	 */
+	public exists(featureSlug: string): boolean {
+		return Object.keys(this.credits).includes(featureSlug);
+	}
+
+	/**
 	 * Calculates the price of a credit purchase
 	 * @param featureSlug - feature slug
 	 * @param availableCredits - total of available and currently accrued credits
