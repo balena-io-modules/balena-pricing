@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 0.2.0 - 2023-02-02
+
+* Add exists() function [Josh Bowling]
+
 ## 0.1.3 - 2023-01-27
 
 * Fix test [Josh Bowling]

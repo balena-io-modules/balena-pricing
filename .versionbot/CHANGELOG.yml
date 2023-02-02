@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add exists() function
+      hash: ac3fd14109f7dae318a6690bcf38f807b7b40a3e
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Josh Bowling
+      nested: []
+  version: 0.2.0
+  title: ""
+  date: 2023-02-02T06:34:22.601Z
+- commits:
     - subject: Fix test
       hash: 55427b78a9077c74143d8649697a8288f9bb38ef
       body: ""
