@@ -1,4 +1,18 @@
 - commits:
+    - subject: Bundle the package for browsers
+      hash: 4f9b373010c2b7570e80c7b06f2a325162874484
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Amit Solanki <amit@balena.io>
+        signed-off-by: Amit Solanki <amit@balena.io>
+      author: Amit Solanki
+      nested: []
+  version: 0.3.0
+  title: ""
+  date: 2023-02-06T14:21:18.110Z
+- commits:
     - subject: Add exists() function
       hash: ac3fd14109f7dae318a6690bcf38f807b7b40a3e
       body: ""
