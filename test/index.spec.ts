@@ -1,19 +1,54 @@
 import { expect } from 'chai';
-import { CreditPricing, CREDITS, InvalidParametersError } from '../src';
+import { CreditPricing, InvalidParametersError } from '../src';
 
 const dynamicPriceCents = 150;
 const FEATURE_SLUG = 'foo:bar';
+const now = Date.now();
 const TEST_CREDITS = {
-	[FEATURE_SLUG]: {
-		firstDiscountPriceCents: 149,
-		discountRate: 0.33,
-		discountThreshold: 12000,
-		discountThresholdPriceCents: 125,
-	},
+	'foo:bar': [
+		{
+			version: 1,
+			validFrom: new Date(now - 60 * 60 * 2),
+			firstDiscountPriceCents: 148,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 124,
+		},
+		{
+			version: 2,
+			validFrom: new Date(now - 60 * 60),
+			firstDiscountPriceCents: 149,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 125,
+		},
+		{
+			version: 3,
+			validFrom: new Date(Date.now() + 60 * 60),
+			firstDiscountPriceCents: 209,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 149,
+		},
+	],
+	'buz:baz': [
+		{
+			version: 1,
+			validFrom: new Date(now + 60 * 60),
+			firstDiscountPriceCents: 189,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 149,
+		},
+	],
 };
 
-const pricing = new CreditPricing(TEST_CREDITS);
-const testCredit = TEST_CREDITS[FEATURE_SLUG];
+const pricing = new CreditPricing({
+	credits: TEST_CREDITS,
+	target: 'current',
+});
+const testCredit = TEST_CREDITS['foo:bar'][1];
+
 const dollar = Intl.NumberFormat('en-US', {
 	style: 'currency',
 	currency: 'USD',
@@ -32,28 +67,202 @@ function toDollar(pennies: number): string {
 }
 
 describe('Instantiation', function () {
+	let instance: CreditPricing | undefined;
+
 	it('should use passed in credit pricing', function () {
-		const custom = new CreditPricing(TEST_CREDITS);
-		expect(custom.credits).to.equal(TEST_CREDITS);
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+		});
+		expect(instance.credits).to.deep.equal(TEST_CREDITS);
 	});
 
-	it('should use default credit pricing if custom not specified', function () {
-		const standard = new CreditPricing();
-		expect(standard.credits).to.equal(CREDITS);
+	it('should sort credit pricing definitions', function () {
+		instance = new CreditPricing({
+			credits: {
+				'foo:bar': [
+					{
+						version: 2,
+						validFrom: new Date(now),
+						firstDiscountPriceCents: 1,
+						discountRate: 0.1,
+						discountThreshold: 1,
+						discountThresholdPriceCents: 1,
+					},
+					{
+						version: 3,
+						validFrom: new Date(now + 60 * 60),
+						firstDiscountPriceCents: 1,
+						discountRate: 0.1,
+						discountThreshold: 1,
+						discountThresholdPriceCents: 1,
+					},
+					{
+						version: 1,
+						validFrom: new Date(now - 60 * 60),
+						firstDiscountPriceCents: 1,
+						discountRate: 0.1,
+						discountThreshold: 1,
+						discountThresholdPriceCents: 1,
+					},
+				],
+			},
+		});
+		expect(instance.credits['foo:bar'][0].version).to.equal(3);
+		expect(instance.credits['foo:bar'][1].version).to.equal(2);
+		expect(instance.credits['foo:bar'][2].version).to.equal(1);
+	});
+
+	it('should use default credit pricing if instance not specified', function () {
+		instance = new CreditPricing();
+		expect(Object.keys(instance.credits)).to.include('device:microservices');
+	});
+
+	it('should throw on feature definitions with duplicate versions', function () {
+		expect(() => {
+			instance = new CreditPricing({
+				credits: {
+					'foo:bar': [
+						{
+							version: 1,
+							validFrom: new Date(),
+							firstDiscountPriceCents: 1,
+							discountRate: 0.1,
+							discountThreshold: 1,
+							discountThresholdPriceCents: 1,
+						},
+						{
+							version: 1,
+							validFrom: new Date(now - 60 * 60),
+							firstDiscountPriceCents: 1,
+							discountRate: 0.1,
+							discountThreshold: 1,
+							discountThresholdPriceCents: 1,
+						},
+					],
+				},
+			});
+		}).to.throw('Duplicate version 1 for feature foo:bar');
+	});
+
+	it('should throw on feature definitions with duplicate validFroms', function () {
+		expect(() => {
+			instance = new CreditPricing({
+				credits: {
+					'foo:bar': [
+						{
+							version: 1,
+							validFrom: new Date(now),
+							firstDiscountPriceCents: 1,
+							discountRate: 0.1,
+							discountThreshold: 1,
+							discountThresholdPriceCents: 1,
+						},
+						{
+							version: 2,
+							validFrom: new Date(now),
+							firstDiscountPriceCents: 1,
+							discountRate: 0.1,
+							discountThreshold: 1,
+							discountThresholdPriceCents: 1,
+						},
+					],
+				},
+			});
+		}).to.throw(
+			`Duplicate validFrom ${new Date(now).toISOString()} for feature foo:bar`,
+		);
 	});
 });
 
-describe('exists()', function () {
-	it('should return true when feature has credit pricing definition', function () {
-		expect(pricing.exists(FEATURE_SLUG)).to.equal(true);
+describe('getDefinition()', function () {
+	let instance: CreditPricing | undefined;
+
+	it('should return latest version when target option is "latest"', function () {
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: 'latest',
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 3);
+		expect(instance.getDefinition('buz:baz')).to.have.property('version', 1);
 	});
 
-	it('should return false when feature does not have credit pricing definition', function () {
-		expect(pricing.exists('buz:baz')).to.equal(false);
+	it('should return current version when no target option is "current"', function () {
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: 'current',
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 2);
+		expect(instance.getDefinition('buz:baz')).to.be.undefined;
+	});
+
+	it('should return current version when no target option is set', function () {
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 2);
+		expect(instance.getDefinition('buz:baz')).to.be.undefined;
+	});
+
+	it('should return specific version when target option is a number', function () {
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: 1,
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 1);
+		expect(instance.getDefinition('buz:baz')).to.have.property('version', 1);
+
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: 2,
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 2);
+		expect(instance.getDefinition('buz:baz')).to.be.undefined;
+	});
+
+	it('should return version valid up to given date when target option is a date', function () {
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: new Date(now),
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 2);
+		expect(instance.getDefinition('buz:baz')).to.be.undefined;
+
+		instance = new CreditPricing({
+			credits: TEST_CREDITS,
+			target: new Date(now + 60 * 60 * 24),
+		});
+		expect(instance.getDefinition('foo:bar')).to.have.property('version', 3);
+		expect(instance.getDefinition('buz:baz')).to.have.property('version', 1);
+	});
+
+	it('should throw on undefined feature slug', function () {
+		expect(() => {
+			instance = new CreditPricing({
+				credits: {
+					'foo:bar': [
+						{
+							version: 1,
+							validFrom: new Date(now),
+							firstDiscountPriceCents: 1,
+							discountRate: 0.1,
+							discountThreshold: 1,
+							discountThresholdPriceCents: 1,
+						},
+					],
+				},
+			});
+			instance.getDefinition('buz:baz');
+		}).to.throw('Feature buz:baz not supported for credits');
 	});
 });
 
 describe('getCreditPrice()', function () {
+	it('should throw on invalid feature slug', function () {
+		expect(() => {
+			pricing.getCreditPrice('buz-bar', 0, 1);
+		}).to.throw('Feature buz-bar not supported for credits');
+	});
+
 	it('should throw on non-integer available credits', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, NaN, 0);
@@ -82,6 +291,67 @@ describe('getCreditPrice()', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, 0, -1);
 		}).to.throw('Credit purchase amount must be greater than 0');
+	});
+
+	describe('should respect constructor target options', function () {
+		it('should calculate using "current" version by default', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+			});
+
+			// Should be using version 2 in this case.
+			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
+				'$1.49',
+			);
+		});
+
+		it('should calculate using "current" version by when target is "current"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'current',
+			});
+
+			// Should be using version 2 in this case.
+			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
+				'$1.49',
+			);
+		});
+
+		it('should calculate using "latest" version by when target is "latest"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'latest',
+			});
+
+			// Should be using version 3 in this case.
+			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
+				'$2.09',
+			);
+		});
+
+		it('should calculate using specified version by when target is a number', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 1,
+			});
+
+			// Should be using version 1 in this case.
+			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
+				'$1.48',
+			);
+		});
+
+		it('should calculate using version valid up to given date by when target is a date', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: new Date(now - 60 * 60 * 2),
+			});
+
+			// Should be using version 1 in this case.
+			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
+				'$1.48',
+			);
+		});
 	});
 
 	describe('when available credits are 0', function () {
@@ -316,6 +586,12 @@ describe('getCreditPrice()', function () {
 });
 
 describe('getCreditTotalPrice()', function () {
+	it('should throw on invalid feature slug', function () {
+		expect(() => {
+			pricing.getCreditTotalPrice('buz-bar', 0, 1);
+		}).to.throw('Feature buz-bar not supported for credits');
+	});
+
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getCreditTotalPrice(FEATURE_SLUG, -1, 0);
@@ -326,6 +602,67 @@ describe('getCreditTotalPrice()', function () {
 		expect(() => {
 			pricing.getCreditTotalPrice(FEATURE_SLUG, 0, -1);
 		}).to.throw('Credit purchase amount must be greater than 0');
+	});
+
+	describe('should respect constructor target options', function () {
+		it('should calculate using "current" version by default', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
+			).to.equal('$1,470.00');
+		});
+
+		it('should calculate using "current" version by when target is "current"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'current',
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
+			).to.equal('$1,470.00');
+		});
+
+		it('should calculate using "latest" version by when target is "latest"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'latest',
+			});
+
+			// Should be using version 3 in this case.
+			expect(
+				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
+			).to.equal('$2,040.00');
+		});
+
+		it('should calculate using specified version by when target is a number', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 1,
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
+			).to.equal('$1,460.00');
+		});
+
+		it('should calculate using version valid up to given date by when target is a date', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: new Date(now - 60 * 60 * 2),
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
+			).to.equal('$1,460.00');
+		});
 	});
 
 	describe('when available credits are 0', function () {
@@ -598,6 +935,12 @@ describe('getCreditTotalPrice()', function () {
 });
 
 describe('getDiscountOverDynamic()', function () {
+	it('should throw on invalid feature slug', function () {
+		expect(() => {
+			pricing.getDiscountOverDynamic('buz-bar', 0, 1, dynamicPriceCents);
+		}).to.throw('Feature buz-bar not supported for credits');
+	});
+
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getDiscountOverDynamic(FEATURE_SLUG, -1, 0, dynamicPriceCents);
@@ -608,6 +951,92 @@ describe('getDiscountOverDynamic()', function () {
 		expect(() => {
 			pricing.getDiscountOverDynamic(FEATURE_SLUG, 0, -1, dynamicPriceCents);
 		}).to.throw('Credit purchase amount must be greater than 0');
+	});
+
+	describe('should respect constructor target options', function () {
+		it('should calculate using "current" version by default', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				`${instance.getDiscountOverDynamic(
+					FEATURE_SLUG,
+					0,
+					1000,
+					dynamicPriceCents,
+				)}%`,
+			).to.equal('2%');
+		});
+
+		it('should calculate using "current" version by when target is "current"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'current',
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				`${instance.getDiscountOverDynamic(
+					FEATURE_SLUG,
+					0,
+					1000,
+					dynamicPriceCents,
+				)}%`,
+			).to.equal('2%');
+		});
+
+		it('should calculate using "latest" version by when target is "latest"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'latest',
+			});
+
+			// Should be using version 3 in this case.
+			expect(
+				`${instance.getDiscountOverDynamic(
+					FEATURE_SLUG,
+					0,
+					1000,
+					dynamicPriceCents,
+				)}%`,
+			).to.equal('-36%');
+		});
+
+		it('should calculate using specified version by when target is a number', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 1,
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				`${instance.getDiscountOverDynamic(
+					FEATURE_SLUG,
+					0,
+					1000,
+					dynamicPriceCents,
+				)}%`,
+			).to.equal('3%');
+		});
+
+		it('should calculate using version valid up to given date by when target is a date', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: new Date(now - 60 * 60 * 2),
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				`${instance.getDiscountOverDynamic(
+					FEATURE_SLUG,
+					0,
+					1000,
+					dynamicPriceCents,
+				)}%`,
+			).to.equal('3%');
+		});
 	});
 
 	describe('when available credits are 0', function () {
@@ -880,6 +1309,12 @@ describe('getDiscountOverDynamic()', function () {
 });
 
 describe('getTotalSavings()', function () {
+	it('should throw on invalid feature slug', function () {
+		expect(() => {
+			pricing.getTotalSavings('buz-bar', 0, 1, dynamicPriceCents);
+		}).to.throw('Feature buz-bar not supported for credits');
+	});
+
 	it('should throw on negative available credits', function () {
 		expect(() => {
 			pricing.getTotalSavings(FEATURE_SLUG, -1, 0, dynamicPriceCents);
@@ -890,6 +1325,77 @@ describe('getTotalSavings()', function () {
 		expect(() => {
 			pricing.getTotalSavings(FEATURE_SLUG, 0, -1, dynamicPriceCents);
 		}).to.throw('Credit purchase amount must be greater than 0');
+	});
+
+	describe('should respect constructor target options', function () {
+		it('should calculate using "current" version by default', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				toDollar(
+					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
+				),
+			).to.equal('$30.00');
+		});
+
+		it('should calculate using "current" version by when target is "current"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'current',
+			});
+
+			// Should be using version 2 in this case.
+			expect(
+				toDollar(
+					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
+				),
+			).to.equal('$30.00');
+		});
+
+		it('should calculate using "latest" version by when target is "latest"', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 'latest',
+			});
+
+			// Should be using version 3 in this case.
+			expect(
+				toDollar(
+					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
+				),
+			).to.equal('-$540.00');
+		});
+
+		it('should calculate using specified version by when target is a number', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: 1,
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				toDollar(
+					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
+				),
+			).to.equal('$40.00');
+		});
+
+		it('should calculate using version valid up to given date by when target is a date', function () {
+			const instance = new CreditPricing({
+				credits: TEST_CREDITS,
+				target: new Date(now - 60 * 60 * 2),
+			});
+
+			// Should be using version 1 in this case.
+			expect(
+				toDollar(
+					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
+				),
+			).to.equal('$40.00');
+		});
 	});
 
 	describe('when available credits are 0', function () {

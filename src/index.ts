@@ -1,10 +1,21 @@
 import { TypedError } from 'typed-error';
 
 export interface Credit {
+	validFrom: Date;
+	version: number;
 	firstDiscountPriceCents: number;
 	discountRate: number;
 	discountThreshold: number;
 	discountThresholdPriceCents: number;
+}
+
+interface Credits {
+	[slug: string]: Credit[];
+}
+
+interface Options {
+	credits?: Credits;
+	target?: 'current' | 'latest' | number | Date;
 }
 
 export class InvalidParametersError extends TypedError {
@@ -14,51 +25,134 @@ export class InvalidParametersError extends TypedError {
 }
 
 // Credit pricing definitions.
-// Initially restrict credit usage to device:microservices feature.
-export const CREDITS: { [key: string]: Credit } = {
-	'device:microservices': {
-		firstDiscountPriceCents: 149,
-		discountRate: 0.33,
-		discountThreshold: 12000,
-		discountThresholdPriceCents: 125,
-	},
+const CREDITS: Credits = {
+	'device:microservices': [
+		{
+			version: 1,
+			validFrom: new Date('2023-02-01T00:00:00Z'),
+			firstDiscountPriceCents: 149,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 125,
+		},
+	],
 };
 
+// Validate credit pricing definitions.
 /**
- * Gets and returns pricing for a given feature
- * @param featureSlug - feature slug
- * @returns credit pricing parameters
+ * Validate credit pricing definitions.
+ * @param credits - credit pricing definitions
+ * @throws {InvalidParametersError} if there are duplicate versions/dates
  *
  * @example
- * const pricing = getFeaturePricing({...}, 'device:microservices');
+ * validateCredits(CREDITS);
  */
-function getFeaturePricing(
-	credits: { [key: string]: Credit },
-	featureSlug: string,
-): Credit {
-	const pricing = credits[featureSlug];
-	if (pricing == null) {
-		throw new InvalidParametersError(
-			'Requested feature not allowed for credit usage',
-		);
+function validateCredits(credits: Credits): void {
+	// Assert that there are no duplicate versions/dates.
+	for (const [slug, definitions] of Object.entries(credits)) {
+		const versions = new Set<number>();
+		const validFroms = new Set<string>();
+		for (const definition of definitions) {
+			if (versions.has(definition.version)) {
+				throw new InvalidParametersError(
+					`Duplicate version ${definition.version} for feature ${slug}`,
+				);
+			}
+
+			const validFrom = definition.validFrom.toISOString();
+			if (validFroms.has(validFrom)) {
+				throw new InvalidParametersError(
+					`Duplicate validFrom ${validFrom} for feature ${slug}`,
+				);
+			}
+
+			versions.add(definition.version);
+			validFroms.add(validFrom);
+		}
 	}
-	return pricing;
+}
+
+/**
+ * Sort credit pricing definitions by validFrom date.
+ * Sorts from latest to oldest.
+ * @param credits - credit pricing definitions
+ * @returns sorted credit pricing definitions
+ *
+ * @example
+ * sortCredits(CREDITS);
+ */
+function sortCredits(credits: Credits): Credits {
+	const sortedCredits: Credits = {};
+	for (const [slug, definitions] of Object.entries(credits)) {
+		sortedCredits[slug] = definitions.sort((a, b) => {
+			return b.validFrom.getTime() - a.validFrom.getTime();
+		});
+	}
+	return sortedCredits;
 }
 
 export class CreditPricing {
-	public credits: { [key: string]: Credit };
+	public credits: { [slug: string]: Credit[] };
+	private target: 'current' | 'latest' | number | Date;
 
-	public constructor(credits = CREDITS) {
-		this.credits = credits;
+	public constructor(options: Options = {}) {
+		// Sort and then validate credit pricing definitions.
+		this.credits = sortCredits(options.credits ?? CREDITS);
+		validateCredits(this.credits);
+
+		// Allow consumers to target one of the following:
+		//  'current' - the most recent valid version (default)
+		//  'latest' - the latest version, regardless of validity
+		//  number - a specific version
+		//  Date - the most recent valid version up to a given date
+		this.target = options.target ?? 'current';
 	}
 
 	/**
-	 * Checks if a given feature slug has a credit pricing definition.
-	 * @param featureSlug - feature slug to check
-	 * @returns boolean denoting if feature has a credit pricing definition
+	 * Gets and returns pricing for a given feature.
+	 * @param featureSlug - feature slug
+	 * @returns credit pricing definition
+	 *
+	 * @example
+	 * getDefinition('device:microservices');
 	 */
-	public exists(featureSlug: string): boolean {
-		return Object.keys(this.credits).includes(featureSlug);
+	public getDefinition(featureSlug: string): Credit | undefined {
+		if (this.credits[featureSlug] == null) {
+			throw new InvalidParametersError(
+				`Feature ${featureSlug} not supported for credits`,
+			);
+		}
+
+		let definition: Credit | undefined;
+
+		// Return latest version of a feature's pricing definition set.
+		// This ignores the validFrom date, meaning it can/will return
+		// definitions that are scheduled to be valid in the future.
+		if (this.target === 'latest') {
+			return this.credits[featureSlug][0];
+		}
+
+		// Return exact version of a feature's pricing definition set.
+		if (typeof this.target === 'number') {
+			definition = this.credits[featureSlug].find((credit) => {
+				return credit.version === this.target;
+			});
+			return definition;
+		}
+
+		// Return version of a feature's pricing definition set that is
+		// valid up to a given date.
+		if (this.target instanceof Date) {
+			return this.credits[featureSlug].find((def) => {
+				return def.validFrom <= this.target;
+			});
+		}
+
+		// Default to returning the most recent valid version of a
+		// feature's pricing definition set.
+		return this.credits[featureSlug].find((def) => {
+			return def.validFrom <= new Date();
+		});
 	}
 
 	/**
@@ -69,7 +163,7 @@ export class CreditPricing {
 	 * @returns price of credits for purchase
 	 *
 	 * @example
-	 * const price = getCreditPrice('device:microservices', 0, 25000);
+	 * getCreditPrice('device:microservices', 0, 25000);
 	 */
 	public getCreditPrice(
 		featureSlug: string,
@@ -98,7 +192,12 @@ export class CreditPricing {
 			);
 		}
 
-		const pricing = getFeaturePricing(this.credits, featureSlug);
+		const pricing = this.getDefinition(featureSlug);
+		if (pricing == null) {
+			throw new InvalidParametersError(
+				'Requested feature not allowed for credit usage',
+			);
+		}
 		const total = availableCredits + creditsToPurchase;
 		if (creditsToPurchase === 0 || total === 0) {
 			return 0;
@@ -136,7 +235,7 @@ export class CreditPricing {
 	 * @returns total price of credits for purchase
 	 *
 	 * @example
-	 * const price = getCreditTotalPrice('device:microservices', 0, 25000);
+	 * getCreditTotalPrice('device:microservices', 0, 25000);
 	 */
 	public getCreditTotalPrice(
 		featureSlug: string,
@@ -158,7 +257,7 @@ export class CreditPricing {
 	 * @returns discount percentage
 	 *
 	 * @example
-	 * const discount = getDiscountOverDynamic('device:microservices', 0, 25000);
+	 * getDiscountOverDynamic('device:microservices', 0, 25000);
 	 */
 	public getDiscountOverDynamic(
 		featureSlug: string,
@@ -183,7 +282,7 @@ export class CreditPricing {
 	 * @returns total savings of credits for purchase
 	 *
 	 * @example
-	 * const savings = getTotalSavings('device:microservices', 0, 25000, 100);
+	 * getTotalSavings('device:microservices', 0, 25000, 100);
 	 */
 	public getTotalSavings(
 		featureSlug: string,
