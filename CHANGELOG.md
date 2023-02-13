@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.0.0 - 2023-02-13
+
+* Add versioned pricing support [Josh Bowling]
+
 ## 0.3.0 - 2023-02-06
 
 * Bundle the package for browsers [Amit Solanki]

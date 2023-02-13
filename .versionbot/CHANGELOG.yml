@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add versioned pricing support
+      hash: 7c43106da4b2f75bcf8f50d43a96951b890b982c
+      body: ""
+      footer:
+        Change-type: major
+        change-type: major
+      author: Josh Bowling
+      nested: []
+  version: 1.0.0
+  title: ""
+  date: 2023-02-13T03:42:15.287Z
+- commits:
     - subject: Bundle the package for browsers
       hash: 4f9b373010c2b7570e80c7b06f2a325162874484
       body: ""
