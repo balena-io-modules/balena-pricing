@@ -35,6 +35,14 @@ const CREDITS: Credits = {
 			discountThreshold: 12000,
 			discountThresholdPriceCents: 125,
 		},
+		{
+			version: 2,
+			validFrom: new Date('2023-03-08T00:00:00Z'),
+			firstDiscountPriceCents: 199,
+			discountRate: 0.33,
+			discountThreshold: 12000,
+			discountThresholdPriceCents: 150,
+		},
 	],
 };
 
