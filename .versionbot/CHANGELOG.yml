@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add device:microservices v2 pricing parameters
+      hash: 6923ae319216841ce93d6f2ff006c142b04388e2
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Josh Bowling
+      nested: []
+  version: 1.1.0
+  title: ""
+  date: 2023-02-14T13:53:22.983Z
+- commits:
     - subject: Add versioned pricing support
       hash: 7c43106da4b2f75bcf8f50d43a96951b890b982c
       body: ""
