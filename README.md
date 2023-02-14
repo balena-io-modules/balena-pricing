@@ -46,7 +46,7 @@ let pricing = new CreditPricing({
 // Use production credit pricing parameters.
 // Target most recent versions valid up to a given date.
 let pricing = new CreditPricing({
-	target: new Date('2023-03-01T00:00:00'),
+	target: new Date('2023-03-01T00:00:00Z'),
 });
 
 // Use custom credit pricing parameters.
@@ -57,7 +57,7 @@ pricing = CreditPricing({
 		'foo:bar': [
 			{
 				version: 1,
-				validFrom: new Date('2023-02-01T00:00:00'),
+				validFrom: new Date('2023-02-01T00:00:00Z'),
 				basePriceCents: 150,
 				firstDiscountPriceCents: 149,
 				discountRate: 0.33,
