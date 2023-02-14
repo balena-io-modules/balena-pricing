@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.1.1 - 2023-02-14
+
+* Update date examples in readme [Josh Bowling]
+
 ## 1.1.0 - 2023-02-14
 
 * Add device:microservices v2 pricing parameters [Josh Bowling]

@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update date examples in readme
+      hash: c718bb0b8ea5808c829b0ac3e4bd479abbd04b1b
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 1.1.1
+  title: ""
+  date: 2023-02-14T14:14:26.059Z
+- commits:
     - subject: Add device:microservices v2 pricing parameters
       hash: 6923ae319216841ce93d6f2ff006c142b04388e2
       body: ""
