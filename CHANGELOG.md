@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.1.2 - 2023-02-22
+
+* Change the engines node & npm requirement to use >= rather than ^ [Thodoris Greasidis]
+
 ## 1.1.1 - 2023-02-14
 
 * Update date examples in readme [Josh Bowling]

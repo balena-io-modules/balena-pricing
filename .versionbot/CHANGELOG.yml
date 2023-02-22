@@ -1,4 +1,16 @@
 - commits:
+    - subject: Change the engines node & npm requirement to use >= rather than ^
+      hash: 75c0bb19e161564b021fb731753ed0ee4347efec
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Thodoris Greasidis
+      nested: []
+  version: 1.1.2
+  title: ""
+  date: 2023-02-22T15:28:57.862Z
+- commits:
     - subject: Update date examples in readme
       hash: c718bb0b8ea5808c829b0ac3e4bd479abbd04b1b
       body: ""
