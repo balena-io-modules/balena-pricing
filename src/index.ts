@@ -18,6 +18,11 @@ interface Options {
 	target?: 'current' | 'latest' | number | Date;
 }
 
+interface CreditRange {
+	from?: number;
+	to?: number;
+}
+
 export class InvalidParametersError extends TypedError {
 	constructor(message: string) {
 		super(message);
@@ -46,7 +51,6 @@ const CREDITS: Credits = {
 	],
 };
 
-// Validate credit pricing definitions.
 /**
  * Validate credit pricing definitions.
  * @param credits - credit pricing definitions
@@ -78,6 +82,34 @@ function validateCredits(credits: Credits): void {
 			validFroms.add(validFrom);
 		}
 	}
+}
+
+/**
+ * Get the required credit amount for a given unit cost.
+ * @param pricing - credit pricing definition
+ * @param unitCost - unit cost
+ * @returns number of credits required
+ *
+ * @example
+ * getCreditAmount(CREDITS['device:microservices'][0], 100);
+ */
+function getCreditAmount(pricing: Credit, unitCost: number): number {
+	if (unitCost >= pricing.discountThresholdPriceCents) {
+		return (
+			((unitCost - pricing.firstDiscountPriceCents) *
+				(pricing.discountThreshold - 1)) /
+				(pricing.discountThresholdPriceCents -
+					pricing.firstDiscountPriceCents) +
+			1
+		);
+	}
+
+	return (
+		pricing.discountThreshold *
+		10 **
+			(Math.log10(unitCost / pricing.discountThresholdPriceCents) /
+				Math.log10(1 - pricing.discountRate))
+	);
 }
 
 /**
@@ -161,6 +193,113 @@ export class CreditPricing {
 		return this.credits[featureSlug].find((def) => {
 			return def.validFrom <= new Date();
 		});
+	}
+
+	/**
+	 * Adjust a given credit amount to be just over the line to be higher than
+	 * the given lower unit cost. This is used to handle rounding edge cases in
+	 * which the original range calculations were slightly off.
+	 * @param featureSlug - credit feature slug
+	 * @param lowerUnitCost - lower unit cost to adjust to
+	 * @param amount - starting point credit amount
+	 * @returns number of credits needed to be just above the lower unit cost
+	 *
+	 * @example
+	 * fixRange('device:microservices', 198, 1000);
+	 */
+	private fixRange(
+		featureSlug: string,
+		lowerUnitCost: number,
+		amount: number,
+	): number {
+		let fixed: number = amount;
+
+		let unitCost = this.getCreditPrice(featureSlug, 0, fixed);
+
+		// Normalize to lower of the two costs.
+		// Add credits until unitCost is down to the lowerUnitCost.
+		while (unitCost > lowerUnitCost) {
+			fixed = fixed + 1;
+			unitCost = this.getCreditPrice(featureSlug, 0, fixed);
+		}
+
+		// Go back right "over the line" to the higher cost.
+		// Reduce credits until unitCost is just higher than the lowerUnitCost.
+		while (unitCost === lowerUnitCost) {
+			fixed = fixed - 1;
+			unitCost = this.getCreditPrice(featureSlug, 0, fixed);
+		}
+
+		return fixed;
+	}
+
+	/**
+	 * Get credit amount range for a given unit cost.
+	 * @param featureSlug - feature slug
+	 * @param unitCost - unit cost
+	 * @returns credit amount range
+	 *
+	 * @example
+	 * getCreditRange('device:microservices', 190);
+	 */
+	public getCreditRange(featureSlug: string, unitCost: number): CreditRange {
+		// Validate unit cost input
+		if (!Number.isInteger(unitCost)) {
+			throw new InvalidParametersError('Unit cost must be a whole number');
+		}
+		if (unitCost <= 0) {
+			throw new InvalidParametersError('Unit cost must be greater than 0');
+		}
+
+		const pricing = this.getDefinition(featureSlug);
+		if (pricing == null) {
+			throw new InvalidParametersError(
+				'Requested feature not allowed for credit usage',
+			);
+		}
+
+		// Requested unit cost cannot be higher than the first discount price
+		if (unitCost > pricing.firstDiscountPriceCents) {
+			throw new InvalidParametersError(
+				`Unit cost cannot be greater than ${pricing.firstDiscountPriceCents}`,
+			);
+		}
+
+		const creditRange: CreditRange = {};
+
+		// Can only calculate from if unit cost is less than the first discount price.
+		if (unitCost < pricing.firstDiscountPriceCents) {
+			creditRange.from = Math.ceil(getCreditAmount(pricing, unitCost + 0.5));
+		}
+
+		// Cannot go lower than $0.01 unit cost.
+		if (unitCost > 1) {
+			creditRange.to = Math.floor(getCreditAmount(pricing, unitCost - 0.5));
+		}
+
+		// Handle rounding edge cases where from/to calculation results aren't exactly right.
+		if (
+			creditRange.from &&
+			!(
+				this.getCreditPrice(featureSlug, 0, creditRange.from) === unitCost &&
+				this.getCreditPrice(featureSlug, 0, creditRange.from - 1) ===
+					unitCost + 1
+			)
+		) {
+			creditRange.from =
+				this.fixRange(featureSlug, unitCost, creditRange.from) + 1;
+		}
+		if (
+			creditRange.to &&
+			!(
+				this.getCreditPrice(featureSlug, 0, creditRange.to) === unitCost &&
+				this.getCreditPrice(featureSlug, 0, creditRange.to + 1) === unitCost - 1
+			)
+		) {
+			creditRange.to = this.fixRange(featureSlug, unitCost - 1, creditRange.to);
+		}
+
+		return creditRange;
 	}
 
 	/**

@@ -256,6 +256,75 @@ describe('getDefinition()', function () {
 	});
 });
 
+describe('getCreditRange()', function () {
+	it('should throw on invalid feature slug', function () {
+		expect(() => {
+			pricing.getCreditRange('buz-bar', testCredit.firstDiscountPriceCents - 1);
+		}).to.throw('Feature buz-bar not supported for credits');
+	});
+
+	it('should throw on non-integer unit cost', function () {
+		expect(() => {
+			pricing.getCreditRange(FEATURE_SLUG, NaN);
+		}).to.throw('Unit cost must be a whole number');
+		expect(() => {
+			pricing.getCreditRange(FEATURE_SLUG, 10.5);
+		}).to.throw('Unit cost must be a whole number');
+	});
+
+	it('should throw on negative unit cost', function () {
+		expect(() => {
+			pricing.getCreditRange(FEATURE_SLUG, -1);
+		}).to.throw('Unit cost must be greater than 0');
+	});
+
+	it('should throw on 0 unit cost', function () {
+		expect(() => {
+			pricing.getCreditRange(FEATURE_SLUG, 0);
+		}).to.throw('Unit cost must be greater than 0');
+	});
+
+	it('should throw on too high unit cost', function () {
+		expect(() => {
+			pricing.getCreditRange(
+				FEATURE_SLUG,
+				testCredit.firstDiscountPriceCents + 1,
+			);
+		}).to.throw(
+			`Unit cost cannot be greater than ${testCredit.firstDiscountPriceCents}`,
+		);
+	});
+
+	for (
+		let unitCost = testCredit.firstDiscountPriceCents;
+		unitCost >= 1;
+		unitCost--
+	) {
+		it(`should return correct credit bounds for ${unitCost} unit cost`, function () {
+			// Generate a credit range for the given unit cost,
+			// then check that the returned range numbers are exactly
+			// on the border between the higher and lower unit costs.
+			const creditRange = pricing.getCreditRange(FEATURE_SLUG, unitCost);
+			if (creditRange.from) {
+				expect(unitCost).to.eq(
+					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from),
+				);
+				expect(unitCost + 1).to.eq(
+					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from - 1),
+				);
+			}
+			if (creditRange.to) {
+				expect(unitCost).to.eq(
+					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.to),
+				);
+				expect(unitCost - 1).to.eq(
+					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.to + 1),
+				);
+			}
+		});
+	}
+});
+
 describe('getCreditPrice()', function () {
 	it('should throw on invalid feature slug', function () {
 		expect(() => {
@@ -278,7 +347,7 @@ describe('getCreditPrice()', function () {
 		}).to.throw('Available credits must be greater than or equal to 0');
 	});
 
-	it('should throw on non-integer available credits', function () {
+	it('should throw on non-integer purchase amount', function () {
 		expect(() => {
 			pricing.getCreditPrice(FEATURE_SLUG, 0, NaN);
 		}).to.throw('Credit purchase amount must be a whole number');
