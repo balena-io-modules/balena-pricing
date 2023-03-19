@@ -109,7 +109,7 @@ function sortCredits(credits: Credits): Credits {
  * round(1.4999999999999996); -> 2
  */
 function round(num: number): number {
-	return Math.round(parseFloat(num.toFixed(14)));
+	return Math.round(parseFloat(num.toFixed(15)));
 }
 
 export class CreditPricing {
