@@ -99,6 +99,19 @@ function sortCredits(credits: Credits): Credits {
 	return sortedCredits;
 }
 
+/**
+ * Round a number, matching the same math as our source of truth.
+ * @param num - number to round
+ * @returns number rounded
+ *
+ * @example
+ * Math.round(1.4999999999999996) -> 1
+ * round(1.4999999999999996); -> 2
+ */
+function round(num: number): number {
+	return Math.round(parseFloat(num.toFixed(14)));
+}
+
 export class CreditPricing {
 	public credits: { [slug: string]: Credit[] };
 	private target: 'current' | 'latest' | number | Date;
@@ -211,7 +224,7 @@ export class CreditPricing {
 			return 0;
 		}
 		if (total <= pricing.discountThreshold) {
-			return Math.round(
+			return round(
 				pricing.firstDiscountPriceCents +
 					((pricing.discountThresholdPriceCents -
 						pricing.firstDiscountPriceCents) /
@@ -220,7 +233,7 @@ export class CreditPricing {
 			);
 		}
 
-		const result = Math.round(
+		const result = round(
 			pricing.discountThresholdPriceCents *
 				Math.pow(
 					1 - pricing.discountRate,
