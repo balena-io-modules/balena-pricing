@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { CreditPricing, InvalidParametersError } from '../src';
 
-const dynamicPriceCents = 150;
+const dynamicPriceCents = 200;
 const FEATURE_SLUG = 'foo:bar';
 const now = Date.now();
 const TEST_CREDITS = {
@@ -17,10 +17,10 @@ const TEST_CREDITS = {
 		{
 			version: 2,
 			validFrom: new Date(now - 60 * 60),
-			firstDiscountPriceCents: 149,
+			firstDiscountPriceCents: 199,
 			discountRate: 0.33,
 			discountThreshold: 12000,
-			discountThresholdPriceCents: 125,
+			discountThresholdPriceCents: 150,
 		},
 		{
 			version: 3,
@@ -301,7 +301,7 @@ describe('getCreditPrice()', function () {
 
 			// Should be using version 2 in this case.
 			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
-				'$1.49',
+				'$1.99',
 			);
 		});
 
@@ -313,7 +313,7 @@ describe('getCreditPrice()', function () {
 
 			// Should be using version 2 in this case.
 			expect(toDollar(instance.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
-				'$1.49',
+				'$1.99',
 			);
 		});
 
@@ -363,74 +363,74 @@ describe('getCreditPrice()', function () {
 
 		it('should calculate price of a single credit', function () {
 			expect(toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1))).to.equal(
-				'$1.49',
+				'$1.99',
 			);
 		});
 
 		it('should calculate price of 1000 credits', function () {
 			expect(toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1000))).to.equal(
-				'$1.47',
+				'$1.95',
 			);
 		});
 
 		it('should calculate price of 1,000,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1000000)),
-			).to.equal('$0.58');
+			).to.equal('$0.70');
 		});
 
 		it('should calculate price of 1,050,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1050000)),
-			).to.equal('$0.57');
+			).to.equal('$0.69');
 		});
 
 		it('should calculate price of 1,160,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1160000)),
-			).to.equal('$0.56');
+			).to.equal('$0.68');
 		});
 
 		it('should calculate price of 1,280,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1280000)),
-			).to.equal('$0.55');
+			).to.equal('$0.67');
 		});
 
 		it('should calculate price of 1,420,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1420000)),
-			).to.equal('$0.54');
+			).to.equal('$0.65');
 		});
 
 		it('should calculate price of 1,580,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1580000)),
-			).to.equal('$0.53');
+			).to.equal('$0.64');
 		});
 
 		it('should calculate price of 1,760,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1760000)),
-			).to.equal('$0.52');
+			).to.equal('$0.63');
 		});
 
 		it('should calculate price of 1,970,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 1970000)),
-			).to.equal('$0.51');
+			).to.equal('$0.62');
 		});
 
 		it('should calculate price of 2,200,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 2200000)),
-			).to.equal('$0.50');
+			).to.equal('$0.61');
 		});
 
 		it('should calculate price of 2,470,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditPrice(FEATURE_SLUG, 0, 2470000)),
-			).to.equal('$0.49');
+			).to.equal('$0.59');
 		});
 	});
 
@@ -448,7 +448,7 @@ describe('getCreditPrice()', function () {
 				toDollar(
 					pricing.getCreditPrice(FEATURE_SLUG, testCredit.discountThreshold, 1),
 				),
-			).to.equal('$1.25');
+			).to.equal('$1.50');
 		});
 
 		it('should calculate price of 1000 credits', function () {
@@ -460,7 +460,7 @@ describe('getCreditPrice()', function () {
 						1000,
 					),
 				),
-			).to.equal('$1.23');
+			).to.equal('$1.48');
 		});
 
 		it('should calculate price of 1,000,000 credits', function () {
@@ -472,7 +472,7 @@ describe('getCreditPrice()', function () {
 						1000000,
 					),
 				),
-			).to.equal('$0.58');
+			).to.equal('$0.69');
 		});
 
 		it('should calculate price of 1,050,000 credits', function () {
@@ -484,7 +484,7 @@ describe('getCreditPrice()', function () {
 						1050000,
 					),
 				),
-			).to.equal('$0.57');
+			).to.equal('$0.69');
 		});
 
 		it('should calculate price of 1,160,000 credits', function () {
@@ -496,7 +496,7 @@ describe('getCreditPrice()', function () {
 						1160000,
 					),
 				),
-			).to.equal('$0.56');
+			).to.equal('$0.68');
 		});
 
 		it('should calculate price of 1,280,000 credits', function () {
@@ -508,7 +508,7 @@ describe('getCreditPrice()', function () {
 						1280000,
 					),
 				),
-			).to.equal('$0.55');
+			).to.equal('$0.66');
 		});
 
 		it('should calculate price of 1,420,000 credits', function () {
@@ -520,7 +520,7 @@ describe('getCreditPrice()', function () {
 						1420000,
 					),
 				),
-			).to.equal('$0.54');
+			).to.equal('$0.65');
 		});
 
 		it('should calculate price of 1,580,000 credits', function () {
@@ -532,7 +532,7 @@ describe('getCreditPrice()', function () {
 						1580000,
 					),
 				),
-			).to.equal('$0.53');
+			).to.equal('$0.64');
 		});
 
 		it('should calculate price of 1,760,000 credits', function () {
@@ -544,7 +544,7 @@ describe('getCreditPrice()', function () {
 						1760000,
 					),
 				),
-			).to.equal('$0.52');
+			).to.equal('$0.63');
 		});
 
 		it('should calculate price of 1,970,000 credits', function () {
@@ -556,7 +556,7 @@ describe('getCreditPrice()', function () {
 						1970000,
 					),
 				),
-			).to.equal('$0.51');
+			).to.equal('$0.62');
 		});
 
 		it('should calculate price of 2,200,000 credits', function () {
@@ -568,7 +568,7 @@ describe('getCreditPrice()', function () {
 						2200000,
 					),
 				),
-			).to.equal('$0.50');
+			).to.equal('$0.61');
 		});
 
 		it('should calculate price of 2,470,000 credits', function () {
@@ -580,7 +580,7 @@ describe('getCreditPrice()', function () {
 						2470000,
 					),
 				),
-			).to.equal('$0.49');
+			).to.equal('$0.59');
 		});
 	});
 });
@@ -613,7 +613,7 @@ describe('getCreditTotalPrice()', function () {
 			// Should be using version 2 in this case.
 			expect(
 				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
-			).to.equal('$1,470.00');
+			).to.equal('$1,950.00');
 		});
 
 		it('should calculate using "current" version by when target is "current"', function () {
@@ -625,7 +625,7 @@ describe('getCreditTotalPrice()', function () {
 			// Should be using version 2 in this case.
 			expect(
 				toDollar(instance.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
-			).to.equal('$1,470.00');
+			).to.equal('$1,950.00');
 		});
 
 		it('should calculate using "latest" version by when target is "latest"', function () {
@@ -675,73 +675,73 @@ describe('getCreditTotalPrice()', function () {
 		it('should calculate price of a single credit', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1)),
-			).to.equal('$1.49');
+			).to.equal('$1.99');
 		});
 
 		it('should calculate price of 1000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1000)),
-			).to.equal('$1,470.00');
+			).to.equal('$1,950.00');
 		});
 
 		it('should calculate price of 1,000,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1000000)),
-			).to.equal('$580,000.00');
+			).to.equal('$700,000.00');
 		});
 
 		it('should calculate price of 1,050,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1050000)),
-			).to.equal('$598,500.00');
+			).to.equal('$724,500.00');
 		});
 
 		it('should calculate price of 1,160,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1160000)),
-			).to.equal('$649,600.00');
+			).to.equal('$788,800.00');
 		});
 
 		it('should calculate price of 1,280,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1280000)),
-			).to.equal('$704,000.00');
+			).to.equal('$857,600.00');
 		});
 
 		it('should calculate price of 1,420,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1420000)),
-			).to.equal('$766,800.00');
+			).to.equal('$923,000.00');
 		});
 
 		it('should calculate price of 1,580,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1580000)),
-			).to.equal('$837,400.00');
+			).to.equal('$1,011,200.00');
 		});
 
 		it('should calculate price of 1,760,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1760000)),
-			).to.equal('$915,200.00');
+			).to.equal('$1,108,800.00');
 		});
 
 		it('should calculate price of 1,970,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 1970000)),
-			).to.equal('$1,004,700.00');
+			).to.equal('$1,221,400.00');
 		});
 
 		it('should calculate price of 2,200,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 2200000)),
-			).to.equal('$1,100,000.00');
+			).to.equal('$1,342,000.00');
 		});
 
 		it('should calculate price of 2,470,000 credits', function () {
 			expect(
 				toDollar(pricing.getCreditTotalPrice(FEATURE_SLUG, 0, 2470000)),
-			).to.equal('$1,210,300.00');
+			).to.equal('$1,457,300.00');
 		});
 	});
 
@@ -767,7 +767,7 @@ describe('getCreditTotalPrice()', function () {
 						1,
 					),
 				),
-			).to.equal('$1.25');
+			).to.equal('$1.50');
 		});
 
 		it('should calculate price of 1000 credits', function () {
@@ -779,7 +779,7 @@ describe('getCreditTotalPrice()', function () {
 						1000,
 					),
 				),
-			).to.equal('$1,230.00');
+			).to.equal('$1,480.00');
 		});
 
 		it('should calculate price of 1,000,000 credits', function () {
@@ -791,7 +791,7 @@ describe('getCreditTotalPrice()', function () {
 						1000000,
 					),
 				),
-			).to.equal('$580,000.00');
+			).to.equal('$690,000.00');
 		});
 
 		it('should calculate price of 1,050,000 credits', function () {
@@ -803,7 +803,7 @@ describe('getCreditTotalPrice()', function () {
 						1050000,
 					),
 				),
-			).to.equal('$598,500.00');
+			).to.equal('$724,500.00');
 		});
 
 		it('should calculate price of 1,160,000 credits', function () {
@@ -815,7 +815,7 @@ describe('getCreditTotalPrice()', function () {
 						1160000,
 					),
 				),
-			).to.equal('$649,600.00');
+			).to.equal('$788,800.00');
 		});
 
 		it('should calculate price of 1,280,000 credits', function () {
@@ -827,7 +827,7 @@ describe('getCreditTotalPrice()', function () {
 						1280000,
 					),
 				),
-			).to.equal('$704,000.00');
+			).to.equal('$844,800.00');
 		});
 
 		it('should calculate price of 1,420,000 credits', function () {
@@ -839,7 +839,7 @@ describe('getCreditTotalPrice()', function () {
 						1420000,
 					),
 				),
-			).to.equal('$766,800.00');
+			).to.equal('$923,000.00');
 		});
 
 		it('should calculate price of 1,580,000 credits', function () {
@@ -851,7 +851,7 @@ describe('getCreditTotalPrice()', function () {
 						1580000,
 					),
 				),
-			).to.equal('$837,400.00');
+			).to.equal('$1,011,200.00');
 		});
 
 		it('should calculate price of 1,760,000 credits', function () {
@@ -863,7 +863,7 @@ describe('getCreditTotalPrice()', function () {
 						1760000,
 					),
 				),
-			).to.equal('$915,200.00');
+			).to.equal('$1,108,800.00');
 		});
 
 		it('should calculate price of 1,970,000 credits', function () {
@@ -875,7 +875,7 @@ describe('getCreditTotalPrice()', function () {
 						1970000,
 					),
 				),
-			).to.equal('$1,004,700.00');
+			).to.equal('$1,221,400.00');
 		});
 
 		it('should calculate price of 2,200,000 credits', function () {
@@ -887,7 +887,7 @@ describe('getCreditTotalPrice()', function () {
 						2200000,
 					),
 				),
-			).to.equal('$1,100,000.00');
+			).to.equal('$1,342,000.00');
 		});
 
 		it('should calculate price of 2,470,000 credits', function () {
@@ -899,7 +899,7 @@ describe('getCreditTotalPrice()', function () {
 						2470000,
 					),
 				),
-			).to.equal('$1,210,300.00');
+			).to.equal('$1,457,300.00');
 		});
 	});
 
@@ -967,7 +967,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('2%');
+			).to.equal('3%');
 		});
 
 		it('should calculate using "current" version by when target is "current"', function () {
@@ -984,7 +984,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('2%');
+			).to.equal('3%');
 		});
 
 		it('should calculate using "latest" version by when target is "latest"', function () {
@@ -1001,7 +1001,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('-36%');
+			).to.equal('-2%');
 		});
 
 		it('should calculate using specified version by when target is a number', function () {
@@ -1018,7 +1018,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('3%');
+			).to.equal('27%');
 		});
 
 		it('should calculate using version valid up to given date by when target is a date', function () {
@@ -1035,7 +1035,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('3%');
+			).to.equal('27%');
 		});
 	});
 
@@ -1059,7 +1059,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('2%');
+			).to.equal('3%');
 		});
 
 		it('should calculate price of 1,000,000 credits', function () {
@@ -1070,7 +1070,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('61%');
+			).to.equal('65%');
 		});
 
 		it('should calculate price of 1,050,000 credits', function () {
@@ -1081,7 +1081,7 @@ describe('getDiscountOverDynamic()', function () {
 					1050000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('62%');
+			).to.equal('66%');
 		});
 
 		it('should calculate price of 1,160,000 credits', function () {
@@ -1092,7 +1092,7 @@ describe('getDiscountOverDynamic()', function () {
 					1160000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('63%');
+			).to.equal('66%');
 		});
 
 		it('should calculate price of 1,280,000 credits', function () {
@@ -1103,7 +1103,7 @@ describe('getDiscountOverDynamic()', function () {
 					1280000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('63%');
+			).to.equal('67%');
 		});
 
 		it('should calculate price of 1,420,000 credits', function () {
@@ -1114,7 +1114,7 @@ describe('getDiscountOverDynamic()', function () {
 					1420000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('64%');
+			).to.equal('68%');
 		});
 
 		it('should calculate price of 1,580,000 credits', function () {
@@ -1125,7 +1125,7 @@ describe('getDiscountOverDynamic()', function () {
 					1580000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('65%');
+			).to.equal('68%');
 		});
 
 		it('should calculate price of 1,760,000 credits', function () {
@@ -1136,7 +1136,7 @@ describe('getDiscountOverDynamic()', function () {
 					1760000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('65%');
+			).to.equal('69%');
 		});
 
 		it('should calculate price of 1,970,000 credits', function () {
@@ -1147,7 +1147,7 @@ describe('getDiscountOverDynamic()', function () {
 					1970000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('66%');
+			).to.equal('69%');
 		});
 
 		it('should calculate price of 2,200,000 credits', function () {
@@ -1158,7 +1158,7 @@ describe('getDiscountOverDynamic()', function () {
 					2200000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('67%');
+			).to.equal('70%');
 		});
 
 		it('should calculate price of 2,470,000 credits', function () {
@@ -1169,7 +1169,7 @@ describe('getDiscountOverDynamic()', function () {
 					2470000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('67%');
+			).to.equal('71%');
 		});
 	});
 
@@ -1182,7 +1182,7 @@ describe('getDiscountOverDynamic()', function () {
 					1,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('17%');
+			).to.equal('25%');
 		});
 
 		it('should calculate discount for 1000 credits', function () {
@@ -1193,7 +1193,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('18%');
+			).to.equal('26%');
 		});
 
 		it('should calculate discount for 1,000,000 credits', function () {
@@ -1204,7 +1204,7 @@ describe('getDiscountOverDynamic()', function () {
 					1000000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('61%');
+			).to.equal('66%');
 		});
 
 		it('should calculate discount for 1,050,000 credits', function () {
@@ -1215,7 +1215,7 @@ describe('getDiscountOverDynamic()', function () {
 					1050000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('62%');
+			).to.equal('66%');
 		});
 
 		it('should calculate discount for 1,160,000 credits', function () {
@@ -1226,7 +1226,7 @@ describe('getDiscountOverDynamic()', function () {
 					1160000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('63%');
+			).to.equal('66%');
 		});
 
 		it('should calculate discount for 1,280,000 credits', function () {
@@ -1237,7 +1237,7 @@ describe('getDiscountOverDynamic()', function () {
 					1280000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('63%');
+			).to.equal('67%');
 		});
 
 		it('should calculate discount for 1,420,000 credits', function () {
@@ -1248,7 +1248,7 @@ describe('getDiscountOverDynamic()', function () {
 					1420000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('64%');
+			).to.equal('68%');
 		});
 
 		it('should calculate discount for 1,580,000 credits', function () {
@@ -1259,7 +1259,7 @@ describe('getDiscountOverDynamic()', function () {
 					1580000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('65%');
+			).to.equal('68%');
 		});
 
 		it('should calculate discount for 1,760,000 credits', function () {
@@ -1270,7 +1270,7 @@ describe('getDiscountOverDynamic()', function () {
 					1760000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('65%');
+			).to.equal('69%');
 		});
 
 		it('should calculate discount for 1,970,000 credits', function () {
@@ -1281,7 +1281,7 @@ describe('getDiscountOverDynamic()', function () {
 					1970000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('66%');
+			).to.equal('69%');
 		});
 
 		it('should calculate discount for 2,200,000 credits', function () {
@@ -1292,7 +1292,7 @@ describe('getDiscountOverDynamic()', function () {
 					2200000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('67%');
+			).to.equal('70%');
 		});
 
 		it('should calculate discount for 2,470,000 credits', function () {
@@ -1303,7 +1303,7 @@ describe('getDiscountOverDynamic()', function () {
 					2470000,
 					dynamicPriceCents,
 				)}%`,
-			).to.equal('67%');
+			).to.equal('71%');
 		});
 	});
 });
@@ -1338,7 +1338,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('$30.00');
+			).to.equal('$50.00');
 		});
 
 		it('should calculate using "current" version by when target is "current"', function () {
@@ -1352,7 +1352,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('$30.00');
+			).to.equal('$50.00');
 		});
 
 		it('should calculate using "latest" version by when target is "latest"', function () {
@@ -1366,7 +1366,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('-$540.00');
+			).to.equal('-$40.00');
 		});
 
 		it('should calculate using specified version by when target is a number', function () {
@@ -1380,7 +1380,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('$40.00');
+			).to.equal('$540.00');
 		});
 
 		it('should calculate using version valid up to given date by when target is a date', function () {
@@ -1394,7 +1394,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					instance.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('$40.00');
+			).to.equal('$540.00');
 		});
 	});
 
@@ -1412,7 +1412,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1000, dynamicPriceCents),
 				),
-			).to.equal('$30.00');
+			).to.equal('$50.00');
 		});
 
 		it('should calculate total savings for 1,000,000 credits', function () {
@@ -1420,7 +1420,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1000000, dynamicPriceCents),
 				),
-			).to.equal('$920,000.00');
+			).to.equal('$1,300,000.00');
 		});
 
 		it('should calculate total savings for 1,050,000 credits', function () {
@@ -1428,7 +1428,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1050000, dynamicPriceCents),
 				),
-			).to.equal('$976,500.00');
+			).to.equal('$1,375,500.00');
 		});
 
 		it('should calculate total savings for 1,160,000 credits', function () {
@@ -1436,7 +1436,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1160000, dynamicPriceCents),
 				),
-			).to.equal('$1,090,400.00');
+			).to.equal('$1,531,200.00');
 		});
 
 		it('should calculate total savings for 1,280,000 credits', function () {
@@ -1444,7 +1444,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1280000, dynamicPriceCents),
 				),
-			).to.equal('$1,216,000.00');
+			).to.equal('$1,702,400.00');
 		});
 
 		it('should calculate total savings for 1,420,000 credits', function () {
@@ -1452,7 +1452,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1420000, dynamicPriceCents),
 				),
-			).to.equal('$1,363,200.00');
+			).to.equal('$1,917,000.00');
 		});
 
 		it('should calculate total savings for 1,580,000 credits', function () {
@@ -1460,7 +1460,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1580000, dynamicPriceCents),
 				),
-			).to.equal('$1,532,600.00');
+			).to.equal('$2,148,800.00');
 		});
 
 		it('should calculate total savings for 1,760,000 credits', function () {
@@ -1468,7 +1468,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1760000, dynamicPriceCents),
 				),
-			).to.equal('$1,724,800.00');
+			).to.equal('$2,411,200.00');
 		});
 
 		it('should calculate total savings for 1,970,000 credits', function () {
@@ -1476,7 +1476,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 1970000, dynamicPriceCents),
 				),
-			).to.equal('$1,950,300.00');
+			).to.equal('$2,718,600.00');
 		});
 
 		it('should calculate total savings for 2,200,000 credits', function () {
@@ -1484,7 +1484,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 2200000, dynamicPriceCents),
 				),
-			).to.equal('$2,200,000.00');
+			).to.equal('$3,058,000.00');
 		});
 
 		it('should calculate total savings for 2,470,000 credits', function () {
@@ -1492,7 +1492,7 @@ describe('getTotalSavings()', function () {
 				toDollar(
 					pricing.getTotalSavings(FEATURE_SLUG, 0, 2470000, dynamicPriceCents),
 				),
-			).to.equal('$2,494,700.00');
+			).to.equal('$3,482,700.00');
 		});
 	});
 
@@ -1507,7 +1507,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$0.25');
+			).to.equal('$0.50');
 		});
 
 		it('should calculate total savings for 1000 credits', function () {
@@ -1520,7 +1520,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$270.00');
+			).to.equal('$520.00');
 		});
 
 		it('should calculate total savings for 1,000,000 credits', function () {
@@ -1533,7 +1533,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$920,000.00');
+			).to.equal('$1,310,000.00');
 		});
 
 		it('should calculate total savings for 1,050,000 credits', function () {
@@ -1546,7 +1546,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$976,500.00');
+			).to.equal('$1,375,500.00');
 		});
 
 		it('should calculate total savings for 1,160,000 credits', function () {
@@ -1559,7 +1559,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,090,400.00');
+			).to.equal('$1,531,200.00');
 		});
 
 		it('should calculate total savings for 1,280,000 credits', function () {
@@ -1572,7 +1572,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,216,000.00');
+			).to.equal('$1,715,200.00');
 		});
 
 		it('should calculate total savings for 1,420,000 credits', function () {
@@ -1585,7 +1585,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,363,200.00');
+			).to.equal('$1,917,000.00');
 		});
 
 		it('should calculate total savings for 1,580,000 credits', function () {
@@ -1598,7 +1598,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,532,600.00');
+			).to.equal('$2,148,800.00');
 		});
 
 		it('should calculate total savings for 1,760,000 credits', function () {
@@ -1611,7 +1611,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,724,800.00');
+			).to.equal('$2,411,200.00');
 		});
 
 		it('should calculate total savings for 1,970,000 credits', function () {
@@ -1624,7 +1624,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$1,950,300.00');
+			).to.equal('$2,718,600.00');
 		});
 
 		it('should calculate total savings for 2,200,000 credits', function () {
@@ -1637,7 +1637,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$2,200,000.00');
+			).to.equal('$3,058,000.00');
 		});
 
 		it('should calculate total savings for 2,470,000 credits', function () {
@@ -1650,7 +1650,7 @@ describe('getTotalSavings()', function () {
 						dynamicPriceCents,
 					),
 				),
-			).to.equal('$2,494,700.00');
+			).to.equal('$3,482,700.00');
 		});
 	});
 });
