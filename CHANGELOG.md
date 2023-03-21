@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.1.3 - 2023-03-21
+
+* Update tests to match current pricing version [Josh Bowling]
+
 ## 1.1.2 - 2023-02-22
 
 * Change the engines node & npm requirement to use >= rather than ^ [Thodoris Greasidis]
