@@ -19,7 +19,7 @@ interface Options {
 }
 
 interface CreditRange {
-	from?: number;
+	from: number;
 	to?: number;
 }
 
@@ -265,21 +265,23 @@ export class CreditPricing {
 			);
 		}
 
-		const creditRange: CreditRange = {};
-
-		// Can only calculate from if unit cost is less than the first discount price.
-		if (unitCost < pricing.firstDiscountPriceCents) {
-			creditRange.from = Math.ceil(getCreditAmount(pricing, unitCost + 0.5));
-		}
-
-		// Cannot go lower than $0.01 unit cost.
+		// Calculate credit range. Can only calculate "from" if unit cost
+		// is less than the first discount price, otherwise set to 1.
+		// Cannot go lower than $0.01 unit cost, so only calculate "to"
+		// if unit cost is greater than 1.
+		const creditRange: CreditRange = {
+			from:
+				unitCost === pricing.firstDiscountPriceCents
+					? 1
+					: Math.ceil(getCreditAmount(pricing, unitCost + 0.5)),
+		};
 		if (unitCost > 1) {
 			creditRange.to = Math.floor(getCreditAmount(pricing, unitCost - 0.5));
 		}
 
 		// Handle rounding edge cases where from/to calculation results aren't exactly right.
 		if (
-			creditRange.from &&
+			creditRange.from > 1 &&
 			!(
 				this.getCreditPrice(featureSlug, 0, creditRange.from) === unitCost &&
 				this.getCreditPrice(featureSlug, 0, creditRange.from - 1) ===

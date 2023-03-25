@@ -309,9 +309,13 @@ describe('getCreditRange()', function () {
 				expect(unitCost).to.eq(
 					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from),
 				);
-				expect(unitCost + 1).to.eq(
-					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from - 1),
-				);
+				if (unitCost === testCredit.firstDiscountPriceCents) {
+					expect(creditRange.from).to.eq(1);
+				} else {
+					expect(unitCost + 1).to.eq(
+						pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from - 1),
+					);
+				}
 			}
 			if (creditRange.to) {
 				expect(unitCost).to.eq(
