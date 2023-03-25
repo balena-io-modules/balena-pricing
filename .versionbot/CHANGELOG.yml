@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add method for getting credit amount range for a unit cost
+      hash: 0b34a76bdef53be3d631231ea7d90115c1c563ff
+      body: ""
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Josh Bowling
+      nested: []
+  version: 1.2.0
+  title: ""
+  date: 2023-03-25T02:34:10.747Z
+- commits:
     - subject: Update tests to match current pricing version
       hash: 1da62e7cbfc4249131a8b2718a819fdd497de6dd
       body: ""

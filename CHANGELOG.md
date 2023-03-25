@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.2.0 - 2023-03-25
+
+* Add method for getting credit amount range for a unit cost [Josh Bowling]
+
 ## 1.1.3 - 2023-03-21
 
 * Update tests to match current pricing version [Josh Bowling]
