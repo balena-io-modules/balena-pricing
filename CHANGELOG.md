@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.2.1 - 2023-03-25
+
+* Set first credit range.from to 1 [Josh Bowling]
+
 ## 1.2.0 - 2023-03-25
 
 * Add method for getting credit amount range for a unit cost [Josh Bowling]

@@ -1,4 +1,16 @@
 - commits:
+    - subject: Set first credit range.from to 1
+      hash: 8523497ee74a3352484f7e4052c4c363747eb0c7
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Josh Bowling
+      nested: []
+  version: 1.2.1
+  title: ""
+  date: 2023-03-25T12:35:54.898Z
+- commits:
     - subject: Add method for getting credit amount range for a unit cost
       hash: 0b34a76bdef53be3d631231ea7d90115c1c563ff
       body: ""
