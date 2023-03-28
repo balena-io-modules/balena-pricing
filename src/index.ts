@@ -237,18 +237,34 @@ export class CreditPricing {
 	 * Get credit amount range for a given unit cost.
 	 * @param featureSlug - feature slug
 	 * @param unitCost - unit cost
+	 * @param availableCredits - currently available credits
 	 * @returns credit amount range
 	 *
 	 * @example
 	 * getCreditRange('device:microservices', 190);
+	 * getCreditRange('device:microservices', 190, 1000);
 	 */
-	public getCreditRange(featureSlug: string, unitCost: number): CreditRange {
+	public getCreditRange(
+		featureSlug: string,
+		unitCost: number,
+		availableCredits = 0,
+	): CreditRange {
 		// Validate unit cost input
 		if (!Number.isInteger(unitCost)) {
 			throw new InvalidParametersError('Unit cost must be a whole number');
 		}
 		if (unitCost <= 0) {
 			throw new InvalidParametersError('Unit cost must be greater than 0');
+		}
+		if (!Number.isInteger(availableCredits)) {
+			throw new InvalidParametersError(
+				'Available credits must be a whole number',
+			);
+		}
+		if (availableCredits < 0) {
+			throw new InvalidParametersError(
+				'Available credits must be greater than or equal to 0',
+			);
 		}
 
 		const pricing = this.getDefinition(featureSlug);
@@ -299,6 +315,23 @@ export class CreditPricing {
 			)
 		) {
 			creditRange.to = this.fixRange(featureSlug, unitCost - 1, creditRange.to);
+		}
+
+		// Adjust for currently available credits.
+		if (availableCredits > 0) {
+			creditRange.from = Math.max(creditRange.from - availableCredits, 0);
+		}
+		if (creditRange.to && availableCredits > 0) {
+			creditRange.to = Math.max(creditRange.to - availableCredits, 0);
+		}
+
+		// Throw error if impossible to purchase credits at requested unit cost
+		// after accounting for currently available credits.
+		if (
+			creditRange.from === 0 &&
+			(creditRange.to === 0 || creditRange.to == null)
+		) {
+			throw new Error('Requested unit cost is too high');
 		}
 
 		return creditRange;

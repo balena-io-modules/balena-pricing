@@ -263,6 +263,33 @@ describe('getCreditRange()', function () {
 		}).to.throw('Feature buz-bar not supported for credits');
 	});
 
+	it('should throw on non-integer available credits', function () {
+		expect(() => {
+			pricing.getCreditRange(
+				FEATURE_SLUG,
+				testCredit.firstDiscountPriceCents - 1,
+				NaN,
+			);
+		}).to.throw('Available credits must be a whole number');
+		expect(() => {
+			pricing.getCreditRange(
+				FEATURE_SLUG,
+				testCredit.firstDiscountPriceCents - 1,
+				10.5,
+			);
+		}).to.throw('Available credits must be a whole number');
+	});
+
+	it('should throw on negative available credits', function () {
+		expect(() => {
+			pricing.getCreditRange(
+				FEATURE_SLUG,
+				testCredit.firstDiscountPriceCents - 1,
+				-1,
+			);
+		}).to.throw('Available credits must be greater than or equal to 0');
+	});
+
 	it('should throw on non-integer unit cost', function () {
 		expect(() => {
 			pricing.getCreditRange(FEATURE_SLUG, NaN);
@@ -295,38 +322,80 @@ describe('getCreditRange()', function () {
 		);
 	});
 
-	for (
-		let unitCost = testCredit.firstDiscountPriceCents;
-		unitCost >= 1;
-		unitCost--
-	) {
-		it(`should return correct credit bounds for ${unitCost} unit cost`, function () {
-			// Generate a credit range for the given unit cost,
-			// then check that the returned range numbers are exactly
-			// on the border between the higher and lower unit costs.
-			const creditRange = pricing.getCreditRange(FEATURE_SLUG, unitCost);
-			if (creditRange.from) {
-				expect(unitCost).to.eq(
-					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from),
-				);
-				if (unitCost === testCredit.firstDiscountPriceCents) {
-					expect(creditRange.from).to.eq(1);
-				} else {
-					expect(unitCost + 1).to.eq(
-						pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.from - 1),
+	it('should throw when requested unit cost is too high after accounting for available credits', function () {
+		expect(() => {
+			pricing.getCreditRange(
+				FEATURE_SLUG,
+				testCredit.firstDiscountPriceCents,
+				testCredit.discountThreshold * 2,
+			);
+		}).to.throw('Requested unit cost is too high');
+	});
+
+	[
+		{
+			description: 'when available credits are 0',
+			availableCredits: 0,
+			from: testCredit.firstDiscountPriceCents,
+		},
+		{
+			description:
+				'when available credits are at the aggressive discount threshold',
+			availableCredits: testCredit.discountThreshold,
+			from: testCredit.discountThresholdPriceCents,
+		},
+	].forEach(({ description, availableCredits, from }) => {
+		describe(description, function () {
+			for (let unitCost = from; unitCost >= 1; unitCost--) {
+				it(`should return correct credit bounds for ${unitCost} unit cost`, function () {
+					// Generate a credit range for the given unit cost,
+					// then check that the returned range numbers are exactly
+					// on the border between the higher and lower unit costs.
+					const creditRange = pricing.getCreditRange(
+						FEATURE_SLUG,
+						unitCost,
+						availableCredits,
 					);
-				}
-			}
-			if (creditRange.to) {
-				expect(unitCost).to.eq(
-					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.to),
-				);
-				expect(unitCost - 1).to.eq(
-					pricing.getCreditPrice(FEATURE_SLUG, 0, creditRange.to + 1),
-				);
+					if (creditRange.from) {
+						expect(unitCost).to.eq(
+							pricing.getCreditPrice(
+								FEATURE_SLUG,
+								availableCredits,
+								creditRange.from,
+							),
+						);
+						if (unitCost === testCredit.firstDiscountPriceCents) {
+							expect(creditRange.from).to.eq(1);
+						} else {
+							expect(unitCost + 1).to.eq(
+								pricing.getCreditPrice(
+									FEATURE_SLUG,
+									availableCredits,
+									creditRange.from - 1,
+								),
+							);
+						}
+					}
+					if (creditRange.to) {
+						expect(unitCost).to.eq(
+							pricing.getCreditPrice(
+								FEATURE_SLUG,
+								availableCredits,
+								creditRange.to,
+							),
+						);
+						expect(unitCost - 1).to.eq(
+							pricing.getCreditPrice(
+								FEATURE_SLUG,
+								availableCredits,
+								creditRange.to + 1,
+							),
+						);
+					}
+				});
 			}
 		});
-	}
+	});
 });
 
 describe('getCreditPrice()', function () {
