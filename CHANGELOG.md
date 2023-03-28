@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 1.3.0 - 2023-03-28
+
+* Add availableCredits option to getCreditRange [Josh Bowling]
+
 ## 1.2.1 - 2023-03-25
 
 * Set first credit range.from to 1 [Josh Bowling]
