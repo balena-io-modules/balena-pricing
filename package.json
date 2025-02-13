@@ -39,7 +39,7 @@
     "build": "npm run clean && npm run build:cjs && npm run build:browser"
   },
   "devDependencies": {
-    "@balena/lint": "^6.2.1",
+    "@balena/lint": "^7.0.0",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
