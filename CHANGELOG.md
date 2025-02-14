@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.0 - 2025-02-14
+
+* Update engine to node v22, update dependencies [joshbwlng]
+
 ## 1.3.0 - 2023-03-28
 
 * Add availableCredits option to getCreditRange [Josh Bowling]

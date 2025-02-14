@@ -1,4 +1,16 @@
 - commits:
+    - subject: Update engine to node v22, update dependencies
+      hash: 991024050e89e191b952b90f1ea9ce2af980bc52
+      body: ""
+      footer:
+        Change-type: major
+        change-type: major
+      author: joshbwlng
+      nested: []
+  version: 2.0.0
+  title: ""
+  date: 2025-02-14T12:28:27.064Z
+- commits:
     - subject: Add availableCredits option to getCreditRange
       hash: 527162a1bb154cb438299d3ad170835c30623a9a
       body: ""
@@ -251,7 +263,10 @@
 
         ```
 
-        Error: Debug Failure. False expression: Non-string value passed to `ts.resolveTypeReferenceDirective`, likely by a wrapping package working with an outdated `resolveTypeReferenceDirectives` signature. This is probably not a problem in TS itself.
+        Error: Debug Failure. False expression: Non-string value passed to
+        `ts.resolveTypeReferenceDirective`, likely by a wrapping package working
+        with an outdated `resolveTypeReferenceDirectives` signature. This is
+        probably not a problem in TS itself.
 
         ```
 
