@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.1 - 2025-02-15
+
+* Update dependency husky to v9 [balena-renovate[bot]]
+
 ## 2.0.0 - 2025-02-14
 
 * Update engine to node v22, update dependencies [joshbwlng]

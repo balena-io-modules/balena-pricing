@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency husky to v9
+      hash: 9bd765ddce22167d08680bb426d1f52068159c65
+      body: |
+        Update husky from 8.0.3 to 9.1.7
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.1
+  title: ""
+  date: 2025-02-15T00:29:34.740Z
+- commits:
     - subject: Update engine to node v22, update dependencies
       hash: 991024050e89e191b952b90f1ea9ce2af980bc52
       body: ""
