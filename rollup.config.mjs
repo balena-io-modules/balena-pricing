@@ -8,6 +8,7 @@ export default {
 	output: {
 		dir: "browser",
 		format: "iife",
+		sourcemap: true,
 	},
 	plugins: [
 		typescript({
