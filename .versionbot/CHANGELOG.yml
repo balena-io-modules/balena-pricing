@@ -1,4 +1,16 @@
 - commits:
+    - subject: Add tslib and update rollup config
+      hash: 85324a44634bdfa030a3f818a260c0c67ce61c21
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: joshbwlng
+      nested: []
+  version: 2.0.2
+  title: ""
+  date: 2025-06-10T08:23:09.571Z
+- commits:
     - subject: Update dependency husky to v9
       hash: 9bd765ddce22167d08680bb426d1f52068159c65
       body: |

@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.2 - 2025-06-10
+
+* Add tslib and update rollup config [joshbwlng]
+
 ## 2.0.1 - 2025-02-15
 
 * Update dependency husky to v9 [balena-renovate[bot]]
