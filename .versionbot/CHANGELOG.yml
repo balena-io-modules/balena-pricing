@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency lint-staged to v16
+      hash: abdd7e7469fe295e1ecbdea7301ba961766de1f5
+      body: |
+        Update lint-staged from 15.5.2 to 16.1.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.3
+  title: ""
+  date: 2025-07-02T23:40:00.369Z
+- commits:
     - subject: Add tslib and update rollup config
       hash: 85324a44634bdfa030a3f818a260c0c67ce61c21
       body: ""

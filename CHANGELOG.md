@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.3 - 2025-07-02
+
+* Update dependency lint-staged to v16 [balena-renovate[bot]]
+
 ## 2.0.2 - 2025-06-10
 
 * Add tslib and update rollup config [joshbwlng]
