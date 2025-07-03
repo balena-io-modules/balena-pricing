@@ -27,12 +27,13 @@
     "url": "https://github.com/balena-io-modules/balena-pricing/issues"
   },
   "scripts": {
-    "lint": "balena-lint --typescript src test",
-    "lint-fix": "balena-lint --typescript --fix src test",
+    "lint": "balena-lint src/ test/ && tsc --noEmit",
+    "lint-fix": "balena-lint --fix src/ test/",
     "pretest": "npm run prepare",
     "test": "mocha",
     "posttest": "npm run lint",
-    "prepare": "node -e \"try { (await import('husky')).default() } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e }\" --input-type module && tsc",
+    "prepack": "npm run build",
+    "prepare": "husky",
     "clean": "rimraf dist browser",
     "build:browser": "rollup -c rollup.config.mjs",
     "build:cjs": "tsc --project ./tsconfig.build.json",
