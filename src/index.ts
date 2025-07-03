@@ -24,6 +24,7 @@ interface CreditRange {
 }
 
 export class InvalidParametersError extends TypedError {
+	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
 	constructor(message: string) {
 		super(message);
 	}
