@@ -1,4 +1,16 @@
 - commits:
+    - subject: Run lint-staged on commit
+      hash: f9f5fcf4f75c9e36dde6c05da53df31d271253ff
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: joshbwlng
+      nested: []
+  version: 2.0.4
+  title: ""
+  date: 2025-07-03T23:58:43.600Z
+- commits:
     - subject: Update dependency lint-staged to v16
       hash: abdd7e7469fe295e1ecbdea7301ba961766de1f5
       body: |

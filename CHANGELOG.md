@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.4 - 2025-07-03
+
+* Run lint-staged on commit [joshbwlng]
+
 ## 2.0.3 - 2025-07-02
 
 * Update dependency lint-staged to v16 [balena-renovate[bot]]
