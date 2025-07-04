@@ -23,12 +23,7 @@ interface CreditRange {
 	to?: number;
 }
 
-export class InvalidParametersError extends TypedError {
-	// eslint-disable-next-line @typescript-eslint/no-useless-constructor
-	constructor(message: string) {
-		super(message);
-	}
-}
+export class InvalidParametersError extends TypedError {}
 
 // Credit pricing definitions.
 const CREDITS: Credits = {
