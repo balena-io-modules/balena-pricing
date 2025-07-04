@@ -1,4 +1,16 @@
 - commits:
+    - subject: Remove useless TypedError constructor
+      hash: c15a866f29c551e0cc5b04dc888d32527591d6c6
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: joshbwlng
+      nested: []
+  version: 2.0.5
+  title: ""
+  date: 2025-07-04T07:27:06.114Z
+- commits:
     - subject: Run lint-staged on commit
       hash: f9f5fcf4f75c9e36dde6c05da53df31d271253ff
       body: ""

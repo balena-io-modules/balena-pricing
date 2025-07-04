@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.5 - 2025-07-04
+
+* Remove useless TypedError constructor [joshbwlng]
+
 ## 2.0.4 - 2025-07-03
 
 * Run lint-staged on commit [joshbwlng]
