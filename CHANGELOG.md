@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.6 - 2025-09-11
+
+* Update dependency chai to v6 [balena-renovate[bot]]
+
 ## 2.0.5 - 2025-07-04
 
 * Remove useless TypedError constructor [joshbwlng]

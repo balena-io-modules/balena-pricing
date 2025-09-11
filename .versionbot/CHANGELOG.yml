@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency chai to v6
+      hash: f994801981b2efe7e5e6345c92e3a7cd1e1b09f0
+      body: |
+        Update chai from 5.3.3 to 6.0.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.6
+  title: ""
+  date: 2025-09-11T05:57:40.304Z
+- commits:
     - subject: Remove useless TypedError constructor
       hash: c15a866f29c551e0cc5b04dc888d32527591d6c6
       body: ""
