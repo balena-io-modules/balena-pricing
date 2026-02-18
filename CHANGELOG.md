@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.7 - 2026-02-18
+
+* Update dependency @rollup/plugin-commonjs to v29 [balena-renovate[bot]]
+
 ## 2.0.6 - 2025-09-11
 
 * Update dependency chai to v6 [balena-renovate[bot]]
