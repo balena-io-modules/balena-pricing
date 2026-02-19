@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.8 - 2026-02-19
+
+* Add id-token: write permission for NPM OIDC publishing [Kyle Harding]
+
 ## 2.0.7 - 2026-02-18
 
 * Update dependency @rollup/plugin-commonjs to v29 [balena-renovate[bot]]

@@ -1,4 +1,18 @@
 - commits:
+    - subject: "Add id-token: write permission for NPM OIDC publishing"
+      hash: d612110b6e452317f4580f551332c35be794688b
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 2.0.8
+  title: ""
+  date: 2026-02-19T01:41:40.089Z
+- commits:
     - subject: Update dependency @rollup/plugin-commonjs to v29
       hash: f888b84a4a56a29284fea8150d264584a7555138
       body: |
