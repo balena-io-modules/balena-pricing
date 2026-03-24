@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.9 - 2026-03-24
+
+* Pin product-os/flowzone action to a53cf4b [balena-renovate[bot]]
+
 ## 2.0.8 - 2026-02-19
 
 * Add id-token: write permission for NPM OIDC publishing [Kyle Harding]
