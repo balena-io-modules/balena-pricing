@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.10 - 2026-03-25
+
+* Update product-os/flowzone digest to eb703ea [balena-renovate[bot]]
+
 ## 2.0.9 - 2026-03-24
 
 * Pin product-os/flowzone action to a53cf4b [balena-renovate[bot]]
