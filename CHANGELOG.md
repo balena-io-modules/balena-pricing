@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.24 - 2026-03-26
+
+* Revert flowzone pinning to master [Kyle Harding]
+
 ## 2.0.23 - 2026-03-26
 
 * Update product-os/flowzone digest to 8ea01d3 [balena-renovate[bot]]
