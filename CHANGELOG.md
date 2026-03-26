@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.20 - 2026-03-26
+
+* Update product-os/flowzone digest to 8d926e2 [balena-renovate[bot]]
+
 ## 2.0.19 - 2026-03-26
 
 * Update product-os/flowzone digest to 20a58d6 [balena-renovate[bot]]
