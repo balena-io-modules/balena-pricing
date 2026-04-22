@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency @rollup/plugin-terser to v1
+      hash: 7979520f9625fec93acc932501a65924092c994f
+      body: |
+        Update @rollup/plugin-terser from 0.4.4 to 1.0.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.25
+  title: ""
+  date: 2026-04-22T09:46:57.561Z
+- commits:
     - subject: Revert flowzone pinning to master
       hash: d40466a308960f675a7a16cca5caf32a718ec270
       body: ""
