@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency lint-staged to v17
+      hash: ec520b506e8332338b67ace70a03743ee2047024
+      body: |
+        Update lint-staged from 16.4.0 to 17.0.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.26
+  title: ""
+  date: 2026-05-12T02:46:32.567Z
+- commits:
     - subject: Update dependency @rollup/plugin-terser to v1
       hash: 7979520f9625fec93acc932501a65924092c994f
       body: |

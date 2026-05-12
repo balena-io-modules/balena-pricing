@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.26 - 2026-05-12
+
+* Update dependency lint-staged to v17 [balena-renovate[bot]]
+
 ## 2.0.25 - 2026-04-22
 
 * Update dependency @rollup/plugin-terser to v1 [balena-renovate[bot]]
