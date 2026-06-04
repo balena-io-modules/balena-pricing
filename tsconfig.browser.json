@@ -5,6 +5,7 @@
 		"target": "es2017",
 		"moduleResolution": "node16",
 		"lib": ["dom", "es2019"],
+		"rootDir": "./src",
 		"outDir": "browser/"
 	},
 	"exclude": [
