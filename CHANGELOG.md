@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.27 - 2026-06-04
+
+* Update typescript to v6 [joshbwlng]
+
 ## 2.0.26 - 2026-05-12
 
 * Update dependency lint-staged to v17 [balena-renovate[bot]]
