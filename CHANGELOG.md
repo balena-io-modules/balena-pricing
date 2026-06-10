@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.28 - 2026-06-10
+
+* Pin dependencies [balena-renovate[bot]]
+
 ## 2.0.27 - 2026-06-04
 
 * Update typescript to v6 [joshbwlng]
