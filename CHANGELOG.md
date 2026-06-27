@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.29 - 2026-06-27
+
+* Update dependency lint-staged to v17.0.8 [balena-renovate[bot]]
+
 ## 2.0.28 - 2026-06-10
 
 * Pin dependencies [balena-renovate[bot]]
