@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.31 - 2026-07-19
+
+* Update dependency @swc-node/register to v1.12.0 [balena-renovate[bot]]
+
 ## 2.0.30 - 2026-06-27
 
 * Update dependency rollup to v4.62.2 [balena-renovate[bot]]

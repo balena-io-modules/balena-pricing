@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency @swc-node/register to v1.12.0
+      hash: 2709c2b0f832ad6a0aca1901f53ff4dfab7db504
+      body: |
+        Update @swc-node/register from 1.11.1 to 1.12.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.31
+  title: ""
+  date: 2026-07-19T09:29:25.057Z
+- commits:
     - subject: Update dependency rollup to v4.62.2
       hash: df5b21fc9a79160ae8763a0c888a2a6bca4f6302
       body: |
