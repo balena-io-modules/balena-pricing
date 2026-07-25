@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.33 - 2026-07-25
+
+* Update dependency lint-staged to v17.1.0 [balena-renovate[bot]]
+
 ## 2.0.32 - 2026-07-25
 
 * Update dependency @swc-node/register to v1.12.1 [balena-renovate[bot]]
