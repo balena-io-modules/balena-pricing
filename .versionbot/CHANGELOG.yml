@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.62.3
+      hash: 6979b08a4cd47a3c12c400b13fc30a31f48254bc
+      body: |
+        Update rollup from 4.62.2 to 4.62.3
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.36
+  title: ""
+  date: 2026-08-01T00:13:37.684Z
+- commits:
     - subject: Update dependency lint-staged to v17.2.0
       hash: 7874232fbd4eb74eb0cf976efa8848b92a294ad3
       body: |
