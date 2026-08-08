@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.38 - 2026-08-08
+
+* Update dependency mocha to v11.8.0 [balena-renovate[bot]]
+
 ## 2.0.37 - 2026-08-08
 
 * Update dependency rollup to v4.62.4 [balena-renovate[bot]]
