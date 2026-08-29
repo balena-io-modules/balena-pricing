@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.42 - 2026-08-29
+
+* Update dependency rollup to v4.63.0 [balena-renovate[bot]]
+
 ## 2.0.41 - 2026-08-25
 
 * Update dependency flowzonify to v0.4.0 [balena-renovate[bot]]

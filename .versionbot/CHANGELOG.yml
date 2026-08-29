@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.63.0
+      hash: 361fccec0dd4431a4805c9169095ee60d5dd22c3
+      body: |
+        Update rollup from 4.62.5 to 4.63.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.42
+  title: ""
+  date: 2026-08-29T01:11:37.533Z
+- commits:
     - subject: Update dependency flowzonify to v0.4.0
       hash: e9ad27d803df0832b93c114467a96886ae2bd346
       body: |
