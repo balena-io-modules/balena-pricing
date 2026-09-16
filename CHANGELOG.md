@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.47 - 2026-09-16
+
+* Update dependency mocha to v12 [balena-renovate[bot]]
+
 ## 2.0.46 - 2026-09-13
 
 * Update dependency lint-staged to v17.5.1 [balena-renovate[bot]]
