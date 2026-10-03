@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.53 - 2026-10-03
+
+* Update dependency chai to v6.3.0 [balena-renovate[bot]]
+
 ## 2.0.52 - 2026-10-03
 
 * Update dependency lint-staged to v17.6.0 [balena-renovate[bot]]
