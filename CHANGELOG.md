@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.54 - 2026-10-04
+
+* Update dependency mocha to v12.0.3 [balena-renovate[bot]]
+
 ## 2.0.53 - 2026-10-03
 
 * Update dependency chai to v6.3.0 [balena-renovate[bot]]
