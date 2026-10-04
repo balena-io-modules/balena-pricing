@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.63.6
+      hash: a6b7b7f66b29be258ec5312057ee45d721c6acfd
+      body: |
+        Update rollup from 4.63.5 to 4.63.6
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.55
+  title: ""
+  date: 2026-10-04T08:57:27.657Z
+- commits:
     - subject: Update dependency mocha to v12.0.3
       hash: ce6de44b9dc84fe047d14f5f9ecc62ba066bd22b
       body: |
