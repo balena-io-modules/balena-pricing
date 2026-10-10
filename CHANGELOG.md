@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.58 - 2026-10-10
+
+* Update dependency rollup to v4.64.2 [balena-renovate[bot]]
+
 ## 2.0.57 - 2026-10-10
 
 * Update dependency rollup to v4.64.1 [balena-renovate[bot]]
