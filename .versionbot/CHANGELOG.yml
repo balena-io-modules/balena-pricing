@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency @rollup/plugin-terser to v1.0.1
+      hash: 6992a949b6019f8b1c4d79e3483010599989cbfe
+      body: |
+        Update @rollup/plugin-terser from 1.0.0 to 1.0.1
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.63
+  title: ""
+  date: 2026-10-24T17:03:38.660Z
+- commits:
     - subject: Update dependency rollup to v4.64.12
       hash: 9732e676ef8056c0f251c790cc726f58e313b072
       body: |

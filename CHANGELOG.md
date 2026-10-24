@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.63 - 2026-10-24
+
+* Update dependency @rollup/plugin-terser to v1.0.1 [balena-renovate[bot]]
+
 ## 2.0.62 - 2026-10-24
 
 * Update dependency rollup to v4.64.12 [balena-renovate[bot]]
