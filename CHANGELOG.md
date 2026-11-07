@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.69 - 2026-11-07
+
+* Update dependency rimraf to v6.1.4 [balena-renovate[bot]]
+
 ## 2.0.68 - 2026-11-02
 
 * Update dependency @balena/lint to v11 [balena-renovate[bot]]
