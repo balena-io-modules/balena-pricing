@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.67.5
+      hash: 0c8f8b8375d8055467c8be99ecdf93a9b55b9650
+      body: |
+        Update rollup from 4.67.4 to 4.67.5
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.72
+  title: ""
+  date: 2026-11-07T09:57:22.823Z
+- commits:
     - subject: Update dependency tslib to v2.9.1
       hash: c68b666012b20c653c00444b2fba4401d25010c6
       body: |

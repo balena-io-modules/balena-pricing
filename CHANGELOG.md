@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.72 - 2026-11-07
+
+* Update dependency rollup to v4.67.5 [balena-renovate[bot]]
+
 ## 2.0.71 - 2026-11-07
 
 * Update dependency tslib to v2.9.1 [balena-renovate[bot]]
