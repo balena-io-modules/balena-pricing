@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.67.4
+      hash: 7cbfb6cc4c248a4b18cbf3c6916826524548125d
+      body: |
+        Update rollup from 4.65.1 to 4.67.4
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.70
+  title: ""
+  date: 2026-11-07T01:56:36.115Z
+- commits:
     - subject: Update dependency rimraf to v6.1.4
       hash: 127205187fee944a8985efeee63ae9e10266f0a6
       body: |

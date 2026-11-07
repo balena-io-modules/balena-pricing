@@ -4,6 +4,10 @@
 
 ## 0.0.3 - 2023-01-14
 
+## 2.0.70 - 2026-11-07
+
+* Update dependency rollup to v4.67.4 [balena-renovate[bot]]
+
 ## 2.0.69 - 2026-11-07
 
 * Update dependency rimraf to v6.1.4 [balena-renovate[bot]]
