@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency rollup to v4.68.6
+      hash: 4380bc87551b8f0c92c9ad1bcdd9efb6fcbecb60
+      body: |
+        Update rollup from 4.68.5 to 4.68.6
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 2.0.76
+  title: ""
+  date: 2026-11-21T08:54:21.115Z
+- commits:
     - subject: Update dependency rollup to v4.68.5
       hash: 20b083407675b5bbbb0fc1ae190f39c04e13e976
       body: |
